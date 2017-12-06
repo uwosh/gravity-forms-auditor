@@ -41,19 +41,33 @@ add_action( 'wp_ajax_run_report', 'report_runner' );
 function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
-    
     $gf_form_meta_tables = get_gf_tables();
     $forms_metadata = array();
     for( $i=0; $i<count($gf_form_meta_tables); $i++ ) {
-        $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
-        $rows = $wpdb->get_results( $query );
-        array_unshift($rows, $i+1); // adding the site id to the beginning of the array
-        array_push( $forms_metadata, $rows );
+        if( table_exists($gf_form_meta_tables[$i]) ){
+            $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
+            $rows = $wpdb->get_results( $query );
+            array_unshift($rows, $i+1); // adding the site id to the beginning of the array
+            array_push( $forms_metadata, $rows );
+        }else {
+            continue;
+        }
     }
 
     echo json_encode($forms_metadata);
 
 	wp_die(); // this is required to terminate immediately and return a proper response
+}
+
+// a function to check if the MySQL table exists
+function table_exists( $table ) {
+    global $wpdb;
+    $result = $wpdb->get_results( "SHOW TABLES LIKE '" . $table . "'" );
+    if(count($result) > 0) {
+        return true;
+    }else {
+        return false;
+    }
 }
 
 // Returns an array of table names for Gravity Forms metadata
