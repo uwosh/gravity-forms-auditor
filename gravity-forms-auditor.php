@@ -50,7 +50,7 @@ function report_runner() {
         array_push( $forms_metadata, $rows );
     }
 
-    json_encode($forms_metadata);
+    echo json_encode($forms_metadata);
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
