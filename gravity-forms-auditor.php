@@ -7,3 +7,7 @@ Author URI: https://twitter.com/musicaljoeker
 Version: 0.1
 Network: True
 */
+
+<?php
+
+add_menu_page( 'Gravity Forms Auditor', 'Gravity Forms Auditor', 'administrator', 'gravity-forms-auditor' );
