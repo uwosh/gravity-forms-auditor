@@ -1,3 +1,4 @@
+<?php
 /*
 Plugin Name: Gravity Forms Auditor
 Plugin URI: http://uwosh.edu/
@@ -8,10 +9,12 @@ Version: 0.1
 Network: True
 */
 
-<?php
-
 function gf_auditor_menu() {
-    add_menu_page( 'Gravity Forms Auditor', 'Gravity Forms Auditor', 'administrator', 'gravity-forms-auditor' );
+    add_menu_page( 'Gravity Forms Auditor', 'Gravity Forms Auditor', 'administrator', 'gravity-forms-auditor', 'gf_auditor', 'dashicons-clipboard' );
 }
 
 add_action( 'network_admin_menu', 'gf_auditor_menu' );
+
+function gf_auditor() {
+    echo 'Gravity Forms Auditor page';
+}
