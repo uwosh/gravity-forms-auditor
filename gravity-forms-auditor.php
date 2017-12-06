@@ -47,7 +47,7 @@ function report_runner() {
     for( $i=0; $i<count($gf_form_meta_tables); $i++ ) {
         $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
         $rows = $wpdb->get_results( $query );
-        array_unshift($rows, $i+1) // adding the site id to the beginning of the array
+        array_unshift($rows, $i+1); // adding the site id to the beginning of the array
         array_push( $forms_metadata, $rows );
     }
 
