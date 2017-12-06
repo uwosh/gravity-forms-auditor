@@ -10,7 +10,7 @@ Network: True
 */
 
 function gf_auditor_menu() {
-    add_menu_page( 'Gravity Forms Auditor', 'Gravity Forms Auditor', 'administrator', 'gravity-forms-auditor', 'gf_auditor', 'dashicons-clipboard' );
+    add_menu_page( 'Form Auditor', 'Gravity Forms Auditor', 'administrator', 'gravity-forms-auditor', 'gf_auditor', 'dashicons-clipboard' );
 }
 
 add_action( 'network_admin_menu', 'gf_auditor_menu' );
