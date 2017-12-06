@@ -37,8 +37,8 @@ function gf_auditor() {
 }
 
 // Registering the run report AJAX call
-add_action( 'wp_ajax_my_action', 'run_report' );
-function run_report() {
+add_action( 'run_report', 'report_runner' );
+function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
     
