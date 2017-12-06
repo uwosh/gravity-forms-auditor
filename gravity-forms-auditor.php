@@ -53,5 +53,7 @@ function report_runner() {
         }
     }
 
+    echo json_encode($gf_form_meta_tables);
+
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
