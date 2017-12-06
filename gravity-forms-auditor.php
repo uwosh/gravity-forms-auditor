@@ -43,7 +43,7 @@ function report_runner() {
     // $whatever = intval( $_POST['whatever'] );
     $num_sites = get_blog_count();
     $gf_form_meta_tables = array();
-    for( $i=1; $i<=$num_sites; i++ ) {
+    for( $i=1; $i<=$num_sites; $i++ ) {
         if( $i==1 ) {
             $table_str = $wpdb->prefix . 'rg_form_meta';
             array_push($gf_form_meta_tables, $table_str);
