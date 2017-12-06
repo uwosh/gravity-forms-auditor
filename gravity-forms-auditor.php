@@ -41,6 +41,14 @@ add_action( 'wp_ajax_run_report', 'report_runner' );
 function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
+    
+    $gf_form_meta_tables = get_gf_tables();
+    echo json_encode($gf_form_meta_tables);
+
+	wp_die(); // this is required to terminate immediately and return a proper response
+}
+
+function get_gf_tables() {
     $num_sites = get_blog_count();
     $gf_form_meta_tables = array();
     for( $i=1; $i<=$num_sites; $i++ ) {
@@ -52,8 +60,5 @@ function report_runner() {
             array_push($gf_form_meta_tables, $table_str);
         }
     }
-
-    echo json_encode($gf_form_meta_tables);
-
-	wp_die(); // this is required to terminate immediately and return a proper response
+    return $gf_form_meta_tables;
 }
