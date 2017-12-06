@@ -20,7 +20,7 @@ function gf_auditor() {
     <script type="text/javascript" >
 	jQuery(document).ready(function($) {
 		var data = {
-			'action': 'my_action'//,
+			'action': 'run_report'//,
 			// 'whatever': 1234
 		};
         jQuery('#submit').click(function() {
@@ -37,7 +37,7 @@ function gf_auditor() {
 }
 
 // Registering the run report AJAX call
-add_action( 'wp_ajax_my_action', 'my_action' );
+add_action( 'wp_ajax_run_report', 'my_action' );
 function my_action() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
