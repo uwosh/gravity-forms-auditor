@@ -14,13 +14,14 @@ function gf_auditor_menu() {
     add_menu_page( 'Form Auditor', 'Form Auditor', 'administrator', 'gravity-forms-auditor', 'gf_auditor', 'dashicons-clipboard' );
 }
 
+// The plugin menu page
 function gf_auditor() {
     ?>
     <script type="text/javascript" >
 	jQuery(document).ready(function($) {
 		var data = {
-			'action': 'my_action',
-			'whatever': 1234
+			'action': 'run_report'//,
+			// 'whatever': 1234
 		};
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, data, function(response) {
@@ -39,8 +40,9 @@ function gf_auditor() {
 add_action( 'wp_ajax_my_action', 'run_report' );
 function run_report() {
 	global $wpdb;
-	$whatever = intval( $_POST['whatever'] );
-	$whatever += 10;
-    echo $whatever;
+    // $whatever = intval( $_POST['whatever'] );
+    
+    echo 'There are ' . get_blog_count() . ' number of sites on this installation.';
+
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
