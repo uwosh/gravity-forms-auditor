@@ -37,12 +37,21 @@ function gf_auditor() {
 }
 
 // Registering the run report AJAX call
-add_action( 'wp_ajax_run_report', 'my_action' );
-function my_action() {
+add_action( 'wp_ajax_run_report', 'report_runner' );
+function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
-    
-    echo 'There are ' . get_blog_count() . ' number of sites on this installation.';
+    $num_sites = get_blog_count();
+    $gf_form_meta_tables = array();
+    for( $i=1; $i<=$num_sites; i++ ) {
+        if( $i==1 ) {
+            $table_str = $wpdb->prefix . 'rg_form_meta';
+            array_push($gf_form_meta_tables, $table_str);
+        }else {
+            $table_str = $wpdb->prefix . $i . '_' . 'rg_form_meta';
+            array_push($gf_form_meta_tables, $table_str);
+        }
+    }
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
