@@ -45,11 +45,13 @@ function report_runner() {
     $gf_form_meta_tables = get_gf_tables();
     $forms_metadata = array();
     for( $i=0; $i<$gf_form_meta_tables; $i++ ) {
-        $rows = $wpdb->get_results( "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i] );
+        $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
+        echo $query;
+        $rows = $wpdb->get_results( $query );
         array_push( $forms_metadata, $rows );
     }
 
-    json_encode($forms_metadata);
+    // json_encode($forms_metadata);
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
