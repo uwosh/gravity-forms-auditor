@@ -43,11 +43,18 @@ function report_runner() {
     // $whatever = intval( $_POST['whatever'] );
     
     $gf_form_meta_tables = get_gf_tables();
-    echo json_encode($gf_form_meta_tables);
+    $forms_metadata = array();
+    for( $i=0; $i<$gf_form_meta_tables; $i++ ) {
+        $rows = $wpdb->get_results( "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i] );
+        array_push( $forms_metadata, $rows );
+    }
+
+    json_encode($forms_metadata);
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
 
+// Returns an array of table names for Gravity Forms metadata
 function get_gf_tables() {
     global $wpdb;
     $num_sites = get_blog_count();
