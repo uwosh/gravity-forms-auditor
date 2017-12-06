@@ -46,12 +46,11 @@ function report_runner() {
     $forms_metadata = array();
     for( $i=0; $i<count($gf_form_meta_tables); $i++ ) {
         $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
-        echo $query;
         $rows = $wpdb->get_results( $query );
         array_push( $forms_metadata, $rows );
     }
 
-    // json_encode($forms_metadata);
+    json_encode($forms_metadata);
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
