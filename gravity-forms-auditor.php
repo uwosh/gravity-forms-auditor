@@ -10,4 +10,8 @@ Network: True
 
 <?php
 
-add_menu_page( 'Gravity Forms Auditor', 'Gravity Forms Auditor', 'administrator', 'gravity-forms-auditor' );
+function gf_auditor_menu() {
+    add_menu_page( 'Gravity Forms Auditor', 'Gravity Forms Auditor', 'administrator', 'gravity-forms-auditor' );
+}
+
+add_action( 'admin_menu', 'gf_auditor_menu' );
