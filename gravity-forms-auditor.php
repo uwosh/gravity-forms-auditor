@@ -49,6 +49,7 @@ function report_runner() {
 }
 
 function get_gf_tables() {
+    global $wpdb;
     $num_sites = get_blog_count();
     $gf_form_meta_tables = array();
     for( $i=1; $i<=$num_sites; $i++ ) {
