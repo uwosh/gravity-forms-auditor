@@ -44,7 +44,7 @@ function report_runner() {
     
     $gf_form_meta_tables = get_gf_tables();
     $forms_metadata = array();
-    for( $i=0; $i<$gf_form_meta_tables; $i++ ) {
+    for( $i=0; $i<count($gf_form_meta_tables); $i++ ) {
         $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
         echo $query;
         $rows = $wpdb->get_results( $query );
