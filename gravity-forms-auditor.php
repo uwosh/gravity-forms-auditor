@@ -47,9 +47,9 @@ function report_runner() {
         if( table_exists($gf_form_meta_tables[$i]) ){
             $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
             $rows = $wpdb->get_results( $query );
-            $rows["display_meta"] = str_replace( "\\\"", "\"", $rows["display_meta"] );
+            // $rows["display_meta"] = str_replace( "\\\"", "\"", $rows["display_meta"] );
             for( $j=0; $j<count($rows); $j++ ) {
-                echo "row->display_meta " . json_encode( $rows[$j]["display_meta"] );
+                echo "row->display_meta: " . $rows[$j]["display_meta"];
             }
             array_unshift($rows, $i+1); // adding the site id to the beginning of the array
             array_push( $forms_metadata, $rows );
