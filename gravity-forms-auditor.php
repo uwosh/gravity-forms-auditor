@@ -43,12 +43,14 @@ function report_runner() {
     // $whatever = intval( $_POST['whatever'] );
     $gf_form_meta_tables = get_gf_tables();
     $forms_metadata = array();
-    for( $i=0; $i<count($gf_form_meta_tables); $i++ ) {
+    for( $i=0; $i<count($gf_form_meta_tables); $i++ ) { // looping through each table
         if( table_exists($gf_form_meta_tables[$i]) ){
             $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
             $rows = $wpdb->get_results( $query );
-            $rows["display_meta"] = str_replace("\\\"", "\"", $rows["display_meta"]);
-            echo "rows " . json_encode($rows);
+            $rows["display_meta"] = str_replace( "\\\"", "\"", $rows["display_meta"] );
+            for( $j=0; $j<count($rows); $j++ ) {
+                echo "row " . json_encode( $rows[$j] );
+            }
             array_unshift($rows, $i+1); // adding the site id to the beginning of the array
             array_push( $forms_metadata, $rows );
         }else {
