@@ -49,7 +49,7 @@ function report_runner() {
             $rows = $wpdb->get_results( $query );
             // $rows["display_meta"] = str_replace( "\\\"", "\"", $rows["display_meta"] );
             for( $j=0; $j<count($rows); $j++ ) {
-                echo "row " . $rows[$j];
+                echo "row " . json_encode($rows[$j]);
             }
             array_unshift($rows, $i+1); // adding the site id to the beginning of the array
             array_push( $forms_metadata, $rows );
