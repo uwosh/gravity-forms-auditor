@@ -59,7 +59,6 @@ function get_all_gf() {
 
             $site = array();
             $site_id = $i+1;
-            // echo 'site_id: ' . $site_id;
             // Converting the JSON coming back from the DB to an array
             $forms = array();
             for( $j=0; $j<count( $rows ); $j++ ) {
@@ -67,6 +66,7 @@ function get_all_gf() {
                 $display_meta = json_decode( $rows[$j]->display_meta, true );
                 $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta );
                 array_push( $forms, $form ); // adding form into forms
+            }
             $site_forms = array( "site_id"=>$site_id, "forms"=>$forms );
             array_push( $all_forms, $site_forms );
         }else {
