@@ -47,13 +47,21 @@ function report_runner() {
         if( table_exists($gf_form_meta_tables[$i]) ){
             $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
             $rows = $wpdb->get_results( $query );
+
+            $site_id = $i+1;
+            echo 'site_id: ' . $site_id;
             // Converting the JSON coming back from the DB to an array
             for( $j=0; $j<count( $rows ); $j++ ) {
-                echo 'Row: ' . print_r( $rows[$j] );
+                $form_id = $rows[$j]->form_id;
+                $display_meta = $rows[$j]->display_meta;
+
+                echo 'form_id: ' . $form_id;
+                echo 'display_meta: ' . $display_meta;
+                // echo 'Row: ' . print_r( $rows[$j] );
                 // $rows[$j]->display_meta = json_decode( $rows[$j]->display_meta, true );
             }
-            array_unshift( $rows, $i+1 ); // adding the site id to the beginning of the array
-            array_push( $forms_metadata, $rows );
+            // array_unshift( $rows, $i+1 ); // adding the site id to the beginning of the array
+            // array_push( $forms_metadata, $rows );
         }else {
             continue;
         }
