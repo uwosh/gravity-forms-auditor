@@ -42,6 +42,7 @@ function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
     $all_forms = get_all_gf();
+    echo 'all_forms: ' . json_encode( $all_forms );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
