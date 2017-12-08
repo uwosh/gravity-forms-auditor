@@ -49,7 +49,8 @@ function report_runner() {
             $rows = $wpdb->get_results( $query );
             // Converting the JSON coming back from the DB to an array
             for( $j=0; $j<count( $rows ); $j++ ) {
-                $rows[$j]->display_meta = json_decode( $rows[$j]->display_meta, true );
+                echo 'Row: ' . print_r( $row[$j] );
+                // $rows[$j]->display_meta = json_decode( $rows[$j]->display_meta, true );
             }
             array_unshift( $rows, $i+1 ); // adding the site id to the beginning of the array
             array_push( $forms_metadata, $rows );
@@ -58,7 +59,7 @@ function report_runner() {
         }
     }
 
-    echo json_encode( $forms_metadata, JSON_FORCE_OBJECT );
+    // echo json_encode( $forms_metadata );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
