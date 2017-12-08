@@ -51,7 +51,7 @@ function report_runner() {
             for( $j=0; $j<count( $rows ); $j++ ) {
                 $rows[$j]->display_meta = json_decode( $rows[$j]->display_meta, true );
             }
-            array_unshift($rows, array( "site_id"=>$i+1 ) ); // adding the site id to the beginning of the array
+            array_unshift( $rows, $i+1 ); // adding the site id to the beginning of the array
             array_push( $forms_metadata, $rows );
         }else {
             continue;
