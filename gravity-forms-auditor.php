@@ -58,7 +58,7 @@ function report_runner() {
         }
     }
 
-    echo $forms_metadata;
+    echo print_r( $forms_metadata );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
