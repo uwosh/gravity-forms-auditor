@@ -58,7 +58,7 @@ function report_runner() {
         }
     }
 
-    echo print_r( $forms_metadata );
+    echo json_encode( $forms_metadata, JSON_FORCE_OBJECT );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
