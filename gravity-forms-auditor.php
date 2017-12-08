@@ -41,6 +41,14 @@ add_action( 'wp_ajax_run_report', 'report_runner' );
 function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
+    $all_forms = get_all_gf();
+
+	wp_die(); // this is required to terminate immediately and return a proper response
+}
+
+// a function that queries the $wpdb and returns all Gravity Forms data on the multisite
+function get_all_gf() {
+    global $wpdb;
     $gf_form_meta_tables = get_gf_tables();
     $all_forms = array();
     for( $i=0; $i<count($gf_form_meta_tables); $i++ ) { // looping through each table
@@ -58,25 +66,13 @@ function report_runner() {
                 $display_meta = json_decode( $rows[$j]->display_meta, true );
                 $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta );
                 array_push( $forms, $form ); // adding form into forms
-
-                // echo 'form_id: ' . $form_id;
-                // echo 'display_meta: ' . $display_meta;
-                // echo 'Row: ' . print_r( $rows[$j] );
-                // $rows[$j]->display_meta = json_decode( $rows[$j]->display_meta, true );
-            }
             $site_forms = array( "site_id"=>$site_id, "forms"=>$forms );
             array_push( $all_forms, $site_forms );
-            
-            // array_unshift( $rows, $i+1 ); // adding the site id to the beginning of the array
-            // array_push( $forms_metadata, $rows );
         }else {
             continue;
         }
     }
-    echo 'all_forms: ' . json_encode( $all_forms );
-    // echo json_encode( $forms_metadata );
-
-	wp_die(); // this is required to terminate immediately and return a proper response
+    return $all_forms;
 }
 
 // a function to check if the MySQL table exists
