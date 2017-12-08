@@ -48,18 +48,24 @@ function report_runner() {
             $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
             $rows = $wpdb->get_results( $query );
 
+            $site = array();
             $site_id = $i+1;
-            echo 'site_id: ' . $site_id;
+            // echo 'site_id: ' . $site_id;
             // Converting the JSON coming back from the DB to an array
+            $forms = array();
             for( $j=0; $j<count( $rows ); $j++ ) {
                 $form_id = $rows[$j]->form_id;
                 $display_meta = $rows[$j]->display_meta;
+                $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta );
+                array_push( $forms, $form ); // adding form into forms
 
-                echo 'form_id: ' . $form_id;
-                echo 'display_meta: ' . $display_meta;
+                // echo 'form_id: ' . $form_id;
+                // echo 'display_meta: ' . $display_meta;
                 // echo 'Row: ' . print_r( $rows[$j] );
                 // $rows[$j]->display_meta = json_decode( $rows[$j]->display_meta, true );
             }
+            $site_forms = array( $site_id, $forms );
+            echo 'site_forms: ' . json_encode( $site_forms );
             // array_unshift( $rows, $i+1 ); // adding the site id to the beginning of the array
             // array_push( $forms_metadata, $rows );
         }else {
