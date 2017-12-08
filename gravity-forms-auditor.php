@@ -64,7 +64,7 @@ function report_runner() {
                 // echo 'Row: ' . print_r( $rows[$j] );
                 // $rows[$j]->display_meta = json_decode( $rows[$j]->display_meta, true );
             }
-            $site_forms = array( $site_id, $forms );
+            $site_forms = array( "site_id"=>$site_id, "forms"=>$forms );
             echo 'site_forms: ' . json_encode( $site_forms );
             // array_unshift( $rows, $i+1 ); // adding the site id to the beginning of the array
             // array_push( $forms_metadata, $rows );
