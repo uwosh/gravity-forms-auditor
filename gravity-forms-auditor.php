@@ -55,7 +55,7 @@ function report_runner() {
             $forms = array();
             for( $j=0; $j<count( $rows ); $j++ ) {
                 $form_id = $rows[$j]->form_id;
-                $display_meta = $rows[$j]->display_meta;
+                $display_meta = json_decode( $rows[$j]->display_meta, true );
                 $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta );
                 array_push( $forms, $form ); // adding form into forms
 
