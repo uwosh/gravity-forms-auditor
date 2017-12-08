@@ -42,7 +42,7 @@ function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
     $gf_form_meta_tables = get_gf_tables();
-    $forms_metadata = array();
+    $all_forms = array();
     for( $i=0; $i<count($gf_form_meta_tables); $i++ ) { // looping through each table
         if( table_exists($gf_form_meta_tables[$i]) ){
             $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
@@ -65,14 +65,15 @@ function report_runner() {
                 // $rows[$j]->display_meta = json_decode( $rows[$j]->display_meta, true );
             }
             $site_forms = array( "site_id"=>$site_id, "forms"=>$forms );
-            echo 'site_forms: ' . json_encode( $site_forms );
+            array_push( $all_forms, $site_forms );
+            
             // array_unshift( $rows, $i+1 ); // adding the site id to the beginning of the array
             // array_push( $forms_metadata, $rows );
         }else {
             continue;
         }
     }
-
+    echo 'all_forms: ' . json_encode( $all_forms );
     // echo json_encode( $forms_metadata );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
