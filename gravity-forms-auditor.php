@@ -64,7 +64,7 @@ function get_all_gf() {
                 $form_id = $rows[$j]->form_id;
                 $display_meta = json_decode( $rows[$j]->display_meta, true );
                 $permalinks = get_pages_with_gf( $site_id, $form_id );
-                echo "permalinks: " . $permalinks;
+                echo "permalinks: " . print_r( $permalinks );
                 $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta );
                 array_push( $forms, $form ); // adding form into forms
             }
