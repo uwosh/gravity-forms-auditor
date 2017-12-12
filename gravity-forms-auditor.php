@@ -59,8 +59,10 @@ function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
     $all_forms = get_all_gf();
-    // $query = "INSERT INTO " . $wpdb->prefix . " ("
-    echo 'all_forms: ' . print_r( $all_forms );
+    $all_forms_json = json_encode( $all_forms );
+    $query = "INSERT INTO " . $wpdb->prefix . " ( forms_dump ) VALUES ( "  $all_forms_json . " );";
+    $wpdb->get_results( $query );
+    echo 'all_forms_json: ' . $all_forms_json;
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
