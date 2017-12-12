@@ -60,13 +60,14 @@ function report_runner() {
     // $whatever = intval( $_POST['whatever'] );
     $all_forms = get_all_gf();
     $all_forms_json = json_encode( $all_forms );
-    // $query = "INSERT INTO " . $wpdb->prefix . "form_auditor ( forms_dump ) VALUES ( " . $all_forms_json . " );";
-    // $wpdb->get_results( $query );
     $wpdb->query( $wpdb->prepare( 
         "INSERT INTO " . $wpdb->prefix . "form_auditor ( forms_dump ) VALUES ( %s )",
         $all_forms_json
     ) );
-    echo 'all_forms_json: ' . $all_forms_json;
+    echo 'before DB all_forms_json: ' . $all_forms_json . "\n\n\n";
+
+    $result = $wpdb->get_results( "SELECT TOP 1 forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run" );
+    echo 'after DB all_forms_json: ' . json_encode( $result );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
