@@ -22,7 +22,7 @@ function create_gf_auditor_table() {
     if( !table_exists( $table_name ) ){
         $query = "CREATE TABLE $table_name (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
-            last_run datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            last_run DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
             forms_dump longtext NOT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
@@ -59,6 +59,7 @@ function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
     $all_forms = get_all_gf();
+    $query = "INSERT INTO " . $wpdb->prefix . " ("
     echo 'all_forms: ' . print_r( $all_forms );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
