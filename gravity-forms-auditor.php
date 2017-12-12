@@ -58,7 +58,7 @@ function get_all_gf() {
             $rows = $wpdb->get_results( $query );
             $site = array();
             $site_id = $i+1;
-            get_site_descriptors();
+            get_site_descriptors( $site_id );
             // Converting the JSON coming back from the DB to an array
             $forms = array();
             for( $j=0; $j<count( $rows ); $j++ ) {
