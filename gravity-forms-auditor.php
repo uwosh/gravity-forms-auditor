@@ -60,7 +60,7 @@ function report_runner() {
     // $whatever = intval( $_POST['whatever'] );
     $all_forms = get_all_gf();
     $all_forms_json = json_encode( $all_forms );
-    $query = "INSERT INTO " . $wpdb->prefix . " ( forms_dump ) VALUES ( " . $all_forms_json . " );";
+    $query = "INSERT INTO " . $wpdb->prefix . "form_auditor ( forms_dump ) VALUES ( " . $all_forms_json . " );";
     $wpdb->get_results( $query );
     echo 'all_forms_json: ' . $all_forms_json;
 
