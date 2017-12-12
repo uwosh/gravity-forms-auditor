@@ -90,8 +90,8 @@ function get_site_descriptors( $site_id ) {
     $admin_email_result = $wpdb->get_results( $admin_email_query );
     $blogname = $blogname_result->option_value;
     $admin_email = $admin_email_result->option_value;
-    echo 'blogname: ' . $blogname;
-    echo 'admin_email: ' . $admin_email;
+    echo 'blogname: ' . $blogname_result;
+    echo 'admin_email: ' . $admin_email_result;
 }
 
 // a function that returns the permalinks where the form is found on the page 
