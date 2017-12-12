@@ -63,7 +63,8 @@ function get_all_gf() {
             for( $j=0; $j<count( $rows ); $j++ ) {
                 $form_id = $rows[$j]->form_id;
                 $display_meta = json_decode( $rows[$j]->display_meta, true );
-                get_pages_with_gf( $site_id, $form_id );
+                $permalinks = get_pages_with_gf( $site_id, $form_id );
+                echo "permalinks: " . $permalinks;
                 $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta );
                 array_push( $forms, $form ); // adding form into forms
             }
@@ -76,21 +77,20 @@ function get_all_gf() {
     return $all_forms;
 }
 
-// a function that returns the permalinks that the 
+// a function that returns the permalinks where the form is found on the page 
 function get_pages_with_gf( $site_id, $form_id ) {
     global $wpdb;
     if( $site_id==1 ) {
-        $query = 'SELECT ID FROM ' . $wpdb->prefix . 'posts WHERE post_content LIKE \'%[gravityform id="' . $form_id . '"%\'';
+        $query = 'SELECT ID FROM ' . $wpdb->prefix . 'posts WHERE post_content LIKE \'%[gravityform id="' . $form_id . '"%\' AND post_type <> \'revision\'';
     } else{
-        $query = 'SELECT ID FROM ' . $wpdb->prefix . $site_id . '_posts WHERE post_content LIKE \'%[gravityform id="' . $form_id . '"%\'';
+        $query = 'SELECT ID FROM ' . $wpdb->prefix . $site_id . '_posts WHERE post_content LIKE \'%[gravityform id="' . $form_id . '"%\' AND post_type <> \'revision\'';
     }
     $result = $wpdb->get_results( $query );
-    // echo 'results from site_id:' . $site_id . ' results: ' . json_encode( $result );
     $permalinks = array();
     for( $i=0; $i<count( $result ); $i++ ) {
         array_push( $permalinks, get_permalink( $result[$i]->ID ) );
     }
-    echo print_r( $permalinks );
+    return $permalinks;
 }
 
 // a function to check if the MySQL table exists
