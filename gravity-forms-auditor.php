@@ -42,7 +42,7 @@ function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
     $all_forms = get_all_gf();
-    echo 'all_forms: ' . print_r( $all_forms );
+    // echo 'all_forms: ' . print_r( $all_forms );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
@@ -59,6 +59,7 @@ function get_all_gf() {
             $site = array();
             $site_id = $i+1;
             $site_descriptors = get_site_descriptors( $site_id );
+            echo print_r($site_descriptors);
             $site_name = $site_descriptors->blogname;
             $admin_email = $site_descriptors->admin_email;
             // Converting the JSON coming back from the DB to an array
