@@ -42,7 +42,7 @@ function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
     $all_forms = get_all_gf();
-    echo 'all_forms: ' . json_encode( $all_forms );
+    // echo 'all_forms: ' . json_encode( $all_forms );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
@@ -56,7 +56,6 @@ function get_all_gf() {
         if( table_exists($gf_form_meta_tables[$i]) ){
             $query = "SELECT form_id, display_meta FROM " . $gf_form_meta_tables[$i];
             $rows = $wpdb->get_results( $query );
-
             $site = array();
             $site_id = $i+1;
             // Converting the JSON coming back from the DB to an array
@@ -64,6 +63,8 @@ function get_all_gf() {
             for( $j=0; $j<count( $rows ); $j++ ) {
                 $form_id = $rows[$j]->form_id;
                 $display_meta = json_decode( $rows[$j]->display_meta, true );
+                
+                $pages_with_form = '';
                 $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta );
                 array_push( $forms, $form ); // adding form into forms
             }
@@ -74,6 +75,20 @@ function get_all_gf() {
         }
     }
     return $all_forms;
+}
+
+// a function that returns the permalinks that the 
+function get_pages_with_gf( $site_id, $form_id ) {
+    global $wpdb;
+    if( $site_id==1 ) {
+        $query = 'SELECT ID FROM ' . $wpdb->prefix . 'posts WHERE post_content LIKE \'%[gravityform id="' . $form_id . '"%\'';
+        $result = $wpdb->get_results( $query );
+        echo 'results from site_id:' . $site_id . ' results: ' . json_encode( $result );
+    } else{
+        $query = 'SELECT ID FROM ' . $wpdb->prefix . $site_id . '_posts WHERE post_content LIKE \'%[gravityform id="' . $form_id . '"%\'';
+        $result = $wpdb->get_results( $query );
+        echo 'results from site_id:' . $site_id . ' results: ' . json_encode( $result );
+    }
 }
 
 // a function to check if the MySQL table exists
