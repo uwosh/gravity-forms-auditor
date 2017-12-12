@@ -22,7 +22,7 @@ function create_gf_auditor_table() {
     if( !table_exists( $table_name ) ){
         $query = "CREATE TABLE $table_name (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
-            last_run DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            last_run DATETIME DEFAULT CURRENT_TIMESTAMP,
             forms_dump longtext NOT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
