@@ -85,11 +85,12 @@ function get_pages_with_gf( $site_id, $form_id ) {
         $query = 'SELECT ID FROM ' . $wpdb->prefix . $site_id . '_posts WHERE post_content LIKE \'%[gravityform id="' . $form_id . '"%\'';
     }
     $result = $wpdb->get_results( $query );
-    echo 'results from site_id:' . $site_id . ' results: ' . json_encode( $result );
+    // echo 'results from site_id:' . $site_id . ' results: ' . json_encode( $result );
     $permalinks = array();
     for( $i=0; $i<count( $result ); $i++ ) {
-        echo $result[$i]->ID;
+        array_push( $permalinks, get_permalink( $result[$i]->ID ) );
     }
+    echo print_r( $permalinks );
 }
 
 // a function to check if the MySQL table exists
