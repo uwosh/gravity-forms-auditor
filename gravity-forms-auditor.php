@@ -42,7 +42,7 @@ function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
     $all_forms = get_all_gf();
-    // echo 'all_forms: ' . json_encode( $all_forms );
+    echo 'all_forms: ' . json_encode( $all_forms );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
@@ -64,8 +64,7 @@ function get_all_gf() {
                 $form_id = $rows[$j]->form_id;
                 $display_meta = json_decode( $rows[$j]->display_meta, true );
                 $permalinks = get_pages_with_gf( $site_id, $form_id );
-                echo "permalinks: " . print_r( $permalinks );
-                $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta );
+                $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta, "permalinks"=>$permalinks );
                 array_push( $forms, $form ); // adding form into forms
             }
             $site_forms = array( "site_id"=>$site_id, "forms"=>$forms );
