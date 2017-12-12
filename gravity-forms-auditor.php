@@ -58,16 +58,21 @@ add_action( 'wp_ajax_run_report', 'report_runner' );
 function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
-    $all_forms = get_all_gf();
-    $all_forms_json = json_encode( $all_forms );
+
+    // getting the last forms dump
+    $old_result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1;" );
+    $old_forms_json = $result[0]->forms_dump;
+
+    // getting the latest dump
+    $new_forms = get_all_gf();
+    $new_forms_json = json_encode( $new_forms );
+    // inserting forms dump into DB
     $wpdb->query( $wpdb->prepare( 
         "INSERT INTO " . $wpdb->prefix . "form_auditor ( forms_dump ) VALUES ( %s )",
-        $all_forms_json
+        $new_forms_json
     ) );
-    echo 'before DB all_forms_json: ' . $all_forms_json . "\n\n\n";
 
-    $result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1;" );
-    echo 'after DB all_forms_json: ' . $result[0]->forms_dump;
+    echo print_r( array_diff( json_decode( $new_forms_json ), json_decode( $old_forms_json ) ) );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
