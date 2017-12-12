@@ -63,8 +63,7 @@ function get_all_gf() {
             for( $j=0; $j<count( $rows ); $j++ ) {
                 $form_id = $rows[$j]->form_id;
                 $display_meta = json_decode( $rows[$j]->display_meta, true );
-                
-                $pages_with_form = '';
+                get_pages_with_gf( $site_id, $form_id );
                 $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta );
                 array_push( $forms, $form ); // adding form into forms
             }
