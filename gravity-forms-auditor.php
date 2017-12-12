@@ -81,12 +81,14 @@ function get_pages_with_gf( $site_id, $form_id ) {
     global $wpdb;
     if( $site_id==1 ) {
         $query = 'SELECT ID FROM ' . $wpdb->prefix . 'posts WHERE post_content LIKE \'%[gravityform id="' . $form_id . '"%\'';
-        $result = $wpdb->get_results( $query );
-        echo 'results from site_id:' . $site_id . ' results: ' . json_encode( $result );
     } else{
         $query = 'SELECT ID FROM ' . $wpdb->prefix . $site_id . '_posts WHERE post_content LIKE \'%[gravityform id="' . $form_id . '"%\'';
-        $result = $wpdb->get_results( $query );
-        echo 'results from site_id:' . $site_id . ' results: ' . json_encode( $result );
+    }
+    $result = $wpdb->get_results( $query );
+    echo 'results from site_id:' . $site_id . ' results: ' . json_encode( $result );
+    $permalinks = array();
+    for( $i=0; $i<count( $result ); $i++ ) {
+        echo $result[$i]->ID;
     }
 }
 
