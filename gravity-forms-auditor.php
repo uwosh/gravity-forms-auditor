@@ -58,6 +58,7 @@ function get_all_gf() {
             $rows = $wpdb->get_results( $query );
             $site = array();
             $site_id = $i+1;
+            get_site_descriptors();
             // Converting the JSON coming back from the DB to an array
             $forms = array();
             for( $j=0; $j<count( $rows ); $j++ ) {
@@ -74,6 +75,23 @@ function get_all_gf() {
         }
     }
     return $all_forms;
+}
+
+function get_site_descriptors( $site_id ) {
+    global $wpdb;
+    if( $site_id==1 ) {
+        $blogname_query = 'SELECT option_value FROM ' . $wpdb->prefix . 'options WHERE option_name=\'blogname\'';
+        $admin_email_query = 'SELECT option_value FROM ' . $wpdb->prefix . 'options WHERE option_name=\'admin_email\'';
+    } else{
+        $blogname_query = 'SELECT option_value FROM ' . $wpdb->prefix . $site_id . '_options WHERE option_name=\'blogname\'';
+        $admin_email_query = 'SELECT option_value FROM ' . $wpdb->prefix . $site_id . '_options WHERE option_name=\'admin_email\'';
+    }
+    $blogname_result = $wpdb->get_results( $blogname_query );
+    $admin_email_result = $wpdb->get_results( $admin_email_query );
+    $blogname = $blogname_result->option_value;
+    $admin_email = $admin_email_result->option_value;
+    echo 'blogname: ' . $blogname;
+    echo 'admin_email: ' . $admin_email;
 }
 
 // a function that returns the permalinks where the form is found on the page 
