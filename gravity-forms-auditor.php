@@ -67,7 +67,7 @@ function report_runner() {
     echo 'before DB all_forms_json: ' . $all_forms_json . "\n\n\n";
 
     $result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1;" );
-    echo 'after DB all_forms_json: ' . $result["forms_dump"];
+    echo 'after DB all_forms_json: ' . $result->forms_dump;
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
