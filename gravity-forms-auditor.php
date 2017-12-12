@@ -14,6 +14,23 @@ function gf_auditor_menu() {
     add_menu_page( 'Form Auditor', 'Form Auditor', 'administrator', 'gravity-forms-auditor', 'gf_auditor', 'dashicons-clipboard' );
 }
 
+register_activation_hook( __FILE__, 'create_gf_auditor_table' );
+function create_gf_auditor_table() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . "form_auditor";
+    $charset_collate = $wpdb->get_charset_collate();
+    if( !table_exists( $table_name ) ){
+        $query = "CREATE TABLE $table_name (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            last_run datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            forms_dump longtext NOT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $query );
+    }
+}
+
 // The plugin menu page
 function gf_auditor() {
     ?>
