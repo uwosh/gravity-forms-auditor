@@ -42,7 +42,7 @@ function report_runner() {
 	global $wpdb;
     // $whatever = intval( $_POST['whatever'] );
     $all_forms = get_all_gf();
-    // echo 'all_forms: ' . print_r( $all_forms );
+    echo 'all_forms: ' . print_r( $all_forms );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
@@ -58,7 +58,9 @@ function get_all_gf() {
             $rows = $wpdb->get_results( $query );
             $site = array();
             $site_id = $i+1;
-            get_site_descriptors( $site_id );
+            $site_descriptors = get_site_descriptors( $site_id );
+            $site_name = $site_descriptors->blogname;
+            $admin_email = $site_descriptors->admin_email;
             // Converting the JSON coming back from the DB to an array
             $forms = array();
             for( $j=0; $j<count( $rows ); $j++ ) {
@@ -68,7 +70,7 @@ function get_all_gf() {
                 $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta, "permalinks"=>$permalinks );
                 array_push( $forms, $form ); // adding form into forms
             }
-            $site_forms = array( "site_id"=>$site_id, "forms"=>$forms );
+            $site_forms = array( "site_id"=>$site_id, "site_name"=>$site_name, "admin_email"=>$admin_email, "forms"=>$forms );
             array_push( $all_forms, $site_forms );
         }else {
             continue;
@@ -90,8 +92,7 @@ function get_site_descriptors( $site_id ) {
     $admin_email_result = $wpdb->get_results( $admin_email_query );
     $blogname = $blogname_result[0]->option_value;
     $admin_email = $admin_email_result[0]->option_value;
-    echo 'blogname: ' . $blogname;
-    echo 'admin_email: ' . $admin_email;
+    return array( "blogname"=>$blogname, "admin_email"=>$admin_email );
 }
 
 // a function that returns the permalinks where the form is found on the page 
