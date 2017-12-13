@@ -107,7 +107,7 @@ function report_runner() {
                 $new_display_meta = $new_site_forms[$j]["display_meta"];
                 $old_display_meta = $old_forms_flattened[$is_form_in_dump[1]][$is_form_in_dump[2]]["display_meta"];
                 $diff = array_diff( $new_display_meta, $old_display_meta );
-                echo 'diff: ' . print_r( $diff ) . "\n\n\n";
+                echo 'diff: ' . $diff . "\n\n\n";
                 if( count( $diff )>0 ){
                     array_push( $diffs, array( "site_id"=>$new_site_id, "form_id"=>$new_form_id ) ); // adding the form to the array of differences
                 }
