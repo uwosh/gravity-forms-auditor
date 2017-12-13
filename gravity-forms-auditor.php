@@ -116,8 +116,6 @@ function report_runner() {
 function generate_report( $diffs, $dump ) {
     require( "PHPExcel/PHPExcel.php" );
     $phpExcel = new PHPExcel;
-    // $phpExcel->getDefaultStyle()->getFont()->setName('Arial');
-    // $phpExcel->getDefaultStyle()->getFont()->setSize(12);
     $phpExcel->getProperties()->setTitle("Gravity Forms Changes");
     $phpExcel->getProperties()->setCreator("Joseph Kerkhof");
     $phpExcel->getProperties()->setDescription("The configuration of every new Gravity Forms form.");
@@ -125,10 +123,15 @@ function generate_report( $diffs, $dump ) {
     $sheet = $phpExcel->getActiveSheet();
     $sheet->setTitle("WordPress Forms Audit");
 
-    // setting the data
-    $sheet->getCell('A1')->setValue('Product');
-    $sheet->getCell('B1')->setValue('Quanity');
-    $sheet->getCell('C1')->setValue('Price');
+    // setting the headers in the sheet
+    $sheet->getCell('A1')->setValue('Site ID');
+    $sheet->getCell('B1')->setValue('Site URL');
+    $sheet->getCell('C1')->setValue('Site Owner');
+    $sheet->getCell('D1')->setValue('Form ID');
+    $sheet->getCell('E1')->setValue('Form Name');
+    $sheet->getCell('F1')->setValue('Pages');
+    $sheet->getCell('G1')->setValue('Fields');
+    $sheet->getCell('H1')->setValue('Field Type');
     
     // creating the directory if it doesn't exist
     if ( !file_exists( wp_upload_dir()["basedir"] . "/gf-audits" ) ) {
