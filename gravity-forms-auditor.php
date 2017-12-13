@@ -82,7 +82,6 @@ function report_runner() {
     // getting the last forms dump
     $result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1;" );
     $old_forms_json = $result[0]->forms_dump;
-    echo $old_forms_json;
     $old_forms = json_decode( $old_forms_json, true );
 
     // getting the latest dump
@@ -94,9 +93,7 @@ function report_runner() {
         $new_forms_json
     ) );
 
-    // echo print_r( array_diff( $new_forms, $old_forms ) ) . "\n\n\n";
-    echo "is old_forms array: " . is_array( $old_forms ) . "\n\n\n";
-    echo "is new_forms array: " . is_array( $new_forms ) . "\n\n\n";
+    echo print_r( array_diff( $new_forms, $old_forms ) ) . "\n\n\n";
     echo 'new_forms_json: ' . $new_forms_json;
 
 	wp_die(); // this is required to terminate immediately and return a proper response
