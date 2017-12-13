@@ -133,8 +133,8 @@ function generate_report( $diffs, $dump ) {
     $sheet->getCell('C1')->setValue('Price');
     
     // creating the directory if it doesn't exist
-    if ( !file_exists( wp_upload_dir() . "gf-audits" ) ) {
-        mkdir( wp_upload_dir()["basedir"] . "gf-audits" , 0777, true);
+    if ( !file_exists( wp_upload_dir()["basedir"] . "/gf-audits" ) ) {
+        mkdir( wp_upload_dir()["basedir"] . "/gf-audits" , 0777, true);
     }
 
     // saving the report
