@@ -109,7 +109,7 @@ function report_runner() {
     generate_report( $diffs, $new_forms );
 
     // returning the URL of the report back to the browser
-    echo wp_upload_dir(); //. "gf-audits/WP-Audit.xlsx";
+    echo print_r(wp_upload_dir()); //. "gf-audits/WP-Audit.xlsx";
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
