@@ -54,7 +54,7 @@ function gf_auditor() {
     global $wpdb;
     $table = $wpdb->prefix . "form_auditor";
     $query = "SELECT id FROM " . $table;
-    $result = $wpdb->get_result( $query );
+    $result = $wpdb->get_results( $query );
     if( count( $result )>0 ){
         $query = "SELECT last_run FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1";
         $result = $wpdb->get_results( $query );
