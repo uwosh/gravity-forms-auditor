@@ -103,10 +103,11 @@ function report_runner() {
 // flattens the display_meta part of the JSON
 function flatten_display_meta( $arr_dump ) {
     for( $i=0; $i<count( $arr_dump ); $i++ ){
-        echo 'arr_dump[$i]' . print_r( $arr_dump[$i] );
+        // echo 'arr_dump[$i]: ' . print_r( $arr_dump[$i] );
         $forms = $arr_dump[$i]->forms;
+        echo 'forms: ' . $forms;
         for( $j=0; $j<count( $forms ); $j++ ){
-            echo 'forms[$j]' . print_r( $forms[$j] );
+            echo 'forms[$j]: ' . print_r( $forms[$j] );
             $display_meta_arr = $forms[$j]->display_meta;
             $display_meta_flattened = json_encode( $display_meta_arr );
             echo 'display_meta_flattened: ' . $display_meta_flattened;
