@@ -48,7 +48,7 @@ function gf_auditor() {
 		
 	});
 	</script>
-    <script src="js/moment.js"></script>
+    <script src="<?php echo plugins_url( "gravity-forms-auditor/js/moment.js" ); ?>"></script>
     <h1>Gravity Forms Auditor</h1>
     <?php
     global $wpdb;
