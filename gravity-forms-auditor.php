@@ -79,7 +79,8 @@ function gf_auditor() {
 // Registering the run report AJAX call
 add_action( 'wp_ajax_run_report', 'report_runner' );
 function report_runner() {
-	global $wpdb;
+    global $wpdb;
+    require( "PHPExcel/PHPExcel.php" );
     // $whatever = intval( $_POST['whatever'] );
 
     // getting the last forms dump
