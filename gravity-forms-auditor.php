@@ -108,11 +108,11 @@ function report_runner() {
                 $new_display_meta = $new_site_forms[$j]["display_meta"];
                 // echo 'new_display_meta: ' . $new_display_meta . "\n\n\n";
                 $old_display_meta = $old_forms_flattened[$is_form_in_dump[1]]["forms"][$is_form_in_dump[2]]["display_meta"];
-                echo 'is_form_in_dump[1]: ' . $is_form_in_dump[1] . "\n\n\n";
-                echo 'is_form_in_dump[2]: ' . $is_form_in_dump[2] . "\n\n\n";
-                echo 'old_display_meta: ' . $old_display_meta . "\n\n\n";
+                // echo 'is_form_in_dump[1]: ' . $is_form_in_dump[1] . "\n\n\n";
+                // echo 'is_form_in_dump[2]: ' . $is_form_in_dump[2] . "\n\n\n";
+                // echo 'old_display_meta: ' . $old_display_meta . "\n\n\n";
                 $diff = array_diff( $new_display_meta, $old_display_meta );
-                echo 'diff: ' . $diff . "\n\n\n";
+                // echo 'diff: ' . $diff . "\n\n\n";
                 if( count( $diff )>0 ){
                     array_push( $diffs, array( "site_id"=>$new_site_id, "form_id"=>$new_form_id ) ); // adding the form to the array of differences
                 }
@@ -122,7 +122,7 @@ function report_runner() {
         }
     }
 
-    // echo 'diffs: ' . print_r( $diffs );
+    echo 'diffs: ' . print_r( $diffs );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
