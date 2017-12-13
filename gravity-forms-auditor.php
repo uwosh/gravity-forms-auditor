@@ -42,10 +42,10 @@ function gf_auditor() {
 		};
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, data, function(response) {
-                console.log('Got this from the server: ' + response);
+                // console.log('Got this from the server: ' + response);
                 
                 // sending the user to fetch the report
-                // window.location.href = response;
+                window.location.href = response;
             });
         });
 		
@@ -154,8 +154,8 @@ function generate_report( $diffs, $dump ) {
                         $row_counter++;
                         $fields = $forms[$k]["display_meta"]["fields"];
                         for( $l=0; $l<count( $fields ); $l++){
-                            $sheet->getCell('G' . (string) $row_counter)->setValue($fields["label"]);
-                            $sheet->getCell('H' . (string) $row_counter)->setValue($fields["type"]);
+                            $sheet->getCell('G' . (string) $row_counter)->setValue($fields[$l]["label"]);
+                            $sheet->getCell('H' . (string) $row_counter)->setValue($fields[$l]["type"]);
                             $row_counter++;
                         }
                     }
