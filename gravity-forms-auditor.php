@@ -95,24 +95,27 @@ function report_runner() {
 
     $new_forms_flattened = flatten_display_meta( $new_forms );
     $old_forms_flattened = flatten_display_meta( $old_forms );
-    // echo print_r( $old_forms_flattened );
 
+    $diffs = get_diffs( $old_forms_flattened, $new_forms_flattened );
+
+    echo print_r( $diffs );
+
+	wp_die(); // this is required to terminate immediately and return a proper response
+}
+
+// a function that takes two dumps and returns an array with a site id and form id with the differences between the dumps
+function get_diffs($old_dump, $new_dump){
     $diffs = array();
-    for( $i=0; $i<count( $new_forms_flattened ); $i++ ){
-        $new_site_id = $new_forms_flattened[$i]["site_id"];
-        $new_site_forms = $new_forms_flattened[$i]["forms"];
+    for( $i=0; $i<count( $new_dump ); $i++ ){
+        $new_site_id = $new_dump[$i]["site_id"];
+        $new_site_forms = $new_dump[$i]["forms"];
         for( $j=0; $j<count( $new_site_forms ); $j++ ){
             $new_form_id = $new_site_forms[$j]["form_id"];
-            $is_form_in_dump = is_form_in_dump( $new_site_id, $new_form_id, $old_forms_flattened );
+            $is_form_in_dump = is_form_in_dump( $new_site_id, $new_form_id, $old_dump );
             if( $is_form_in_dump[0] ){
                 $new_display_meta = $new_site_forms[$j]["display_meta"];
-                // echo 'new_display_meta: ' . $new_display_meta . "\n\n\n";
-                $old_display_meta = $old_forms_flattened[$is_form_in_dump[1]]["forms"][$is_form_in_dump[2]]["display_meta"];
-                // echo 'is_form_in_dump[1]: ' . $is_form_in_dump[1] . "\n\n\n";
-                // echo 'is_form_in_dump[2]: ' . $is_form_in_dump[2] . "\n\n\n";
-                // echo 'old_display_meta: ' . $old_display_meta . "\n\n\n";
+                $old_display_meta = $old_dump[$is_form_in_dump[1]]["forms"][$is_form_in_dump[2]]["display_meta"];
                 $are_strings_same = $new_display_meta==$old_display_meta;
-                // echo 'are_strings_same: ' . $are_strings_same . "\n\n\n";
                 if( !$are_strings_same ){
                     array_push( $diffs, array( "site_id"=>$new_site_id, "form_id"=>$new_form_id ) ); // adding the form to the array of differences
                 }
@@ -121,10 +124,7 @@ function report_runner() {
             }
         }
     }
-
-    echo 'diffs: ' . print_r( $diffs );
-
-	wp_die(); // this is required to terminate immediately and return a proper response
+    return $diffs;
 }
 
 // returns a boolean if the form is in a dump based on site_id and form_id
