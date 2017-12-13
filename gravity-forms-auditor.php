@@ -138,7 +138,7 @@ function generate_report( $diffs, $dump ) {
     }
 
     // saving the report
-    $writer->save( wp_upload_dir()["basedir"] . "gf-audits/WP-Audit.xlsx");
+    $writer->save( wp_upload_dir()["basedir"] . "/gf-audits/WP-Audit.xlsx");
 }
 
 // a function that takes two dumps and returns an array with a site id and form id with the differences between the dumps
