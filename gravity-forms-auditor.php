@@ -140,22 +140,22 @@ function generate_report( $diffs, $dump ) {
         $form_id = $diffs[$i]["form_id"];
         for( $j=0; $j<count( $dump ); $j++ ){
             if( $dump[$j]["site_id"]==$site_id ) {
-                $sheet->getCell('A' . $row_counter)->setValue($dump[$j]["site_id"]);
-                $sheet->getCell('B' . $row_counter)->setValue($dump[$j]["site_name"]);
-                $sheet->getCell('C' . $row_counter)->setValue($dump[$j]["admin_email"]);
+                $sheet->getCell('A' . (string) $row_counter)->setValue($dump[$j]["site_id"]);
+                $sheet->getCell('B' . (string) $row_counter)->setValue($dump[$j]["site_name"]);
+                $sheet->getCell('C' . (string) $row_counter)->setValue($dump[$j]["admin_email"]);
                 
                 $forms = $dump[$j]["forms"];
                 for( $k=0; $k<count( $forms ); $k++ ){
                     if( $forms[$k]["form_id"]==$form_id ){
-                        $sheet->getCell('D' . $row_counter)->setValue($forms[$k]["form_id"]);
-                        $sheet->getCell('E' . $row_counter)->setValue($forms[$k]["display_meta"]["title"]);
-                        $sheet->getCell('F' . $row_counter)->setValue(implode(", ", $forms[$k]["permalinks"]));
+                        $sheet->getCell('D' . (string) $row_counter)->setValue($forms[$k]["form_id"]);
+                        $sheet->getCell('E' . (string) $row_counter)->setValue($forms[$k]["display_meta"]["title"]);
+                        $sheet->getCell('F' . (string) $row_counter)->setValue(implode(", ", $forms[$k]["permalinks"]));
 
                         $row_counter++;
                         $fields = $forms[$k]["display_meta"]["fields"];
                         for( $l=0; $l<count( $fields ); $l++){
-                            $sheet->getCell('G' . $row_counter)->setValue($fields["label"]);
-                            $sheet->getCell('H' . $row_counter)->setValue($fields["type"]);
+                            $sheet->getCell('G' . (string) $row_counter)->setValue($fields["label"]);
+                            $sheet->getCell('H' . (string) $row_counter)->setValue($fields["type"]);
                             $row_counter++;
                         }
                     }
