@@ -107,7 +107,7 @@ function report_runner() {
     generate_report( $diffs, $new_forms );
 
     // returning the URL of the report back to the browser
-    echo wp_upload_dir()["baseurl"] . "/gf-audits/WP-Audit.xlsx";
+    // echo wp_upload_dir()["baseurl"] . "/gf-audits/WP-Audit.xlsx";
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
@@ -134,7 +134,7 @@ function generate_report( $diffs, $dump ) {
     $sheet->getCell('H1')->setValue('Field Type');
 
     // Inserting form data
-    echo $dump;
+    echo print_r($dump);
     
     // creating the directory if it doesn't exist
     if ( !file_exists( wp_upload_dir()["basedir"] . "/gf-audits" ) ) {
