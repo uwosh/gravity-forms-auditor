@@ -109,7 +109,7 @@ function report_runner() {
     generate_report( $diffs, $new_forms );
 
     // returning the URL of the report back to the browser
-    echo plugins_url( "gravity-forms-auditor/reports/WP-Audit.xlsx" );
+    echo wp_upload_dir() . "gf-audits/WP-Audit.xlsx";
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
@@ -132,8 +132,13 @@ function generate_report( $diffs, $dump ) {
     $sheet->getCell('B1')->setValue('Quanity');
     $sheet->getCell('C1')->setValue('Price');
     
+    // creating the directory if it doesn't exist
+    if ( !file_exists( wp_upload_dir() . "gf-audits" ) ) {
+        mkdir( wp_upload_dir() . "gf-audits" , 0777, true);
+    }
+
     // saving the report
-    $writer->save("reports/WP-Audit.xlsx");
+    $writer->save( wp_upload_dir() . "gf-audits/WP-Audit.xlsx");
 }
 
 // a function that takes two dumps and returns an array with a site id and form id with the differences between the dumps
