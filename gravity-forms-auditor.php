@@ -80,7 +80,7 @@ function report_runner() {
     // $whatever = intval( $_POST['whatever'] );
 
     // getting the last forms dump
-    $old_result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1;" );
+    $result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1;" );
     $old_forms_json = $result[0]->forms_dump;
     echo $old_forms_json;
     $old_forms = json_decode( $old_forms_json, true );
