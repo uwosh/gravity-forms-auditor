@@ -110,12 +110,12 @@ function flatten_display_meta( $arr_dump ) {
             // echo 'forms[$j]: ' . print_r( $forms[$j] );
             $display_meta_arr = $forms[$j]["display_meta"];
             $display_meta_flattened = json_encode( $display_meta_arr );
-            echo 'display_meta_flattened: ' . $display_meta_flattened;
+            // echo 'display_meta_flattened: ' . $display_meta_flattened;
             $forms[$j]["display_meta"] = $display_meta_flattened;
         }
         $arr_dump[$i]["forms"] = $forms;
     }
-    // echo 'dump: ' . print_r( $arr_dump );
+    echo 'dump: ' . print_r( $arr_dump );
 }
 
 // a function that queries the $wpdb and returns all Gravity Forms data on the multisite
