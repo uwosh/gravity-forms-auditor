@@ -57,13 +57,17 @@ function gf_auditor() {
         $result = $wpdb->get_results( $query );
         $last_run = $result[0]->last_run;
         ?>
-        <p>Last run: <span id="last-run"></span></p>
+        <p>Last report run: <span id="last-run"></span></p>
         <script>
         jQuery(document).ready(function($) {
             var lastRun = moment("<?php echo $last_run; ?>").format('MMMM Do YYYY, h:mm a');
             jQuery("#last-run").html(lastRun);
         });
         </script>
+        <?php
+    } else{
+        ?>
+        <p>The report has never been run.</p>
         <?php
     }
     submit_button( 'Run Report' );
