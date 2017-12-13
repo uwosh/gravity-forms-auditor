@@ -93,10 +93,25 @@ function report_runner() {
         $new_forms_json
     ) );
 
-    echo print_r( array_diff( $new_forms, $old_forms ) ) . "\n\n\n";
-    echo 'new_forms_json: ' . $new_forms_json;
+    flatten_display_meta( $new_forms );
+    // echo print_r( array_diff( $new_forms, $old_forms ) ) . "\n\n\n";
+    // echo 'new_forms_json: ' . $new_forms_json;
 
 	wp_die(); // this is required to terminate immediately and return a proper response
+}
+
+// flattens the display_meta part of the JSON
+function flatten_display_meta( $arr_dump ) {
+    for( $i=0; $i<count( $arr_dump ); $i++ ){
+        $forms = $arr_dump[$i]->forms;
+        for( $j=0; $j<count( $forms ); $j++ ){
+            $display_meta_arr = $forms[$j]->display_meta;
+            $display_meta_flattened = json_encode( $display_meta_arr );
+            $forms[$j]->display_meta = $display_meta_flattened;
+        }
+        $arr_dump[$i]->forms = $forms;
+    }
+    echo 'dump: ' . print_r( $arr_dump );
 }
 
 // a function that queries the $wpdb and returns all Gravity Forms data on the multisite
