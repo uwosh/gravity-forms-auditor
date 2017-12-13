@@ -45,9 +45,9 @@ function gf_auditor() {
                 // console.log('Got this from the server: ' + response);
 
                 // sending the user to fetch the report
-                jQuery.get(response, (data) ->
+                jQuery.get(response, function (data) {
                     window.location.href = $(this).attr('href');
-                )
+                });
             });
         });
 		
