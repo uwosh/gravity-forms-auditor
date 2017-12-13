@@ -134,7 +134,7 @@ function generate_report( $diffs, $dump ) {
     
     // creating the directory if it doesn't exist
     if ( !file_exists( wp_upload_dir() . "gf-audits" ) ) {
-        mkdir( wp_upload_dir() . "gf-audits" , 0777, true);
+        mkdir( wp_upload_dir()["basedir"] . "gf-audits" , 0777, true);
     }
 
     // saving the report
