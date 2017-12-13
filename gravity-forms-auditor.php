@@ -42,12 +42,12 @@ function gf_auditor() {
 		};
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, data, function(response) {
-                // console.log('Got this from the server: ' + response);
+                console.log('Got this from the server: ' + response);
 
                 // sending the user to fetch the report
-                jQuery.get(response, function (data) {
-                    window.location.href = $(this).attr('href');
-                });
+                // jQuery.get(response, function (data) {
+                //     window.location.href = $(this).attr('href');
+                // });
             });
         });
 		
@@ -109,7 +109,7 @@ function report_runner() {
     generate_report( $diffs, $new_forms );
 
     // returning the URL of the report back to the browser
-    echo wp_upload_dir() . "gf-audits/WP-Audit.xlsx";
+    echo wp_upload_dir(); //. "gf-audits/WP-Audit.xlsx";
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
