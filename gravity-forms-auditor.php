@@ -102,7 +102,7 @@ function report_runner() {
         $new_site_forms = $new_forms_flattened[$i]["forms"];
         for( $j=0; $j<count( $new_site_forms ); $j++ ){
             $new_form_id = $new_site_forms[$j]["form_id"];
-            $is_form_in_dump = is_form_in_dump( $new_site_id, $new_form_id, $old_forms_flattened )
+            $is_form_in_dump = is_form_in_dump( $new_site_id, $new_form_id, $old_forms_flattened );
             if( $is_form_in_dump[0] ){
                 $new_display_meta = $new_site_forms[$j]["display_meta"];
                 $old_display_meta = $old_forms_flattened[$is_form_in_dump[1]][$is_form_in_dump[2]]["display_meta"];
