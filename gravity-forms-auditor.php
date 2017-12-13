@@ -43,11 +43,9 @@ function gf_auditor() {
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, data, function(response) {
                 // console.log('Got this from the server: ' + response);
-                window.location.href = response;
+                
                 // sending the user to fetch the report
-                // jQuery.get(response, function (data) {
-                //     window.location.href = $(this).attr('href');
-                // });
+                window.location.href = response;
             });
         });
 		
@@ -118,8 +116,8 @@ function report_runner() {
 function generate_report( $diffs, $dump ) {
     require( "PHPExcel/PHPExcel.php" );
     $phpExcel = new PHPExcel;
-    $phpExcel->getDefaultStyle()->getFont()->setName('Arial');
-    $phpExcel->getDefaultStyle()->getFont()->setSize(12);
+    // $phpExcel->getDefaultStyle()->getFont()->setName('Arial');
+    // $phpExcel->getDefaultStyle()->getFont()->setSize(12);
     $phpExcel->getProperties()->setTitle("Gravity Forms Changes");
     $phpExcel->getProperties()->setCreator("Joseph Kerkhof");
     $phpExcel->getProperties()->setDescription("The configuration of every new Gravity Forms form.");
@@ -136,7 +134,6 @@ function generate_report( $diffs, $dump ) {
     if ( !file_exists( wp_upload_dir()["basedir"] . "/gf-audits" ) ) {
         mkdir( wp_upload_dir()["basedir"] . "/gf-audits" , 0777, true);
     }
-
     // saving the report
     $writer->save( wp_upload_dir()["basedir"] . "/gf-audits/WP-Audit.xlsx");
 }
