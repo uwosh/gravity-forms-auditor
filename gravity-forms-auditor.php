@@ -94,8 +94,8 @@ function report_runner() {
     ) );
 
     // echo print_r( array_diff( $new_forms, $old_forms ) ) . "\n\n\n";
-    echo "old_forms array: " . print_r( $old_forms ) . "\n\n\n";
-    echo "new_forms array: " . print_r( $new_forms ) . "\n\n\n";
+    echo "is old_forms array: " . is_array( $old_forms ) . "\n\n\n";
+    echo "is new_forms array: " . is_array( $new_forms ) . "\n\n\n";
     echo 'new_forms_json: ' . $new_forms_json;
 
 	wp_die(); // this is required to terminate immediately and return a proper response
