@@ -109,7 +109,7 @@ function report_runner() {
     generate_report( $diffs, $new_forms );
 
     // returning the URL of the report back to the browser
-    echo wp_upload_dir()["baseurl"]; //. "gf-audits/WP-Audit.xlsx";
+    echo wp_upload_dir()["baseurl"] . "gf-audits/WP-Audit.xlsx";
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
@@ -138,7 +138,7 @@ function generate_report( $diffs, $dump ) {
     }
 
     // saving the report
-    $writer->save( wp_upload_dir() . "gf-audits/WP-Audit.xlsx");
+    $writer->save( wp_upload_dir()["basedir"] . "gf-audits/WP-Audit.xlsx");
 }
 
 // a function that takes two dumps and returns an array with a site id and form id with the differences between the dumps
