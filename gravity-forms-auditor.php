@@ -104,7 +104,7 @@ function report_runner() {
 function flatten_display_meta( $arr_dump ) {
     for( $i=0; $i<count( $arr_dump ); $i++ ){
         // echo 'arr_dump[$i]: ' . print_r( $arr_dump[$i] );
-        $forms = $arr_dump[$i]->forms;
+        $forms = $arr_dump[$i]["forms"];
         echo 'forms: ' . $forms;
         for( $j=0; $j<count( $forms ); $j++ ){
             echo 'forms[$j]: ' . print_r( $forms[$j] );
