@@ -70,7 +70,7 @@ function gf_auditor() {
         <?php
     } else{
         ?>
-        <p>The report has never been run.</p>
+        <p>Last report run: The report has never been run.</p>
         <?php
     }
     submit_button( 'Run Report' );
