@@ -42,10 +42,10 @@ function gf_auditor() {
 		};
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, data, function(response) {
-                // console.log('Got this from the server: ' + response);
+                console.log('Got this from the server: ' + response);
                 
                 // sending the user to fetch the report
-                window.location.href = response;
+                // window.location.href = response;
             });
         });
 		
@@ -132,6 +132,9 @@ function generate_report( $diffs, $dump ) {
     $sheet->getCell('F1')->setValue('Pages');
     $sheet->getCell('G1')->setValue('Fields');
     $sheet->getCell('H1')->setValue('Field Type');
+
+    // Inserting form data
+    echo $dump;
     
     // creating the directory if it doesn't exist
     if ( !file_exists( wp_upload_dir()["basedir"] . "/gf-audits" ) ) {
