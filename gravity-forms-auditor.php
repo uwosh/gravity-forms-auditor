@@ -85,14 +85,15 @@ function report_runner() {
 
     // getting the latest dump
     $new_forms = get_all_gf();
-    // $new_forms_json = json_encode( $new_forms );
+    $new_forms_json = json_encode( $new_forms );
     // inserting forms dump into DB
     $wpdb->query( $wpdb->prepare( 
         "INSERT INTO " . $wpdb->prefix . "form_auditor ( forms_dump ) VALUES ( %s )",
         $new_forms_json
     ) );
 
-    echo print_r( array_diff( $new_forms, $old_forms ) );
+    echo print_r( array_diff( $new_forms, $old_forms ) ) . "\n\n\n";
+    echo 'new_forms_json: ' . $new_forms_json;
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
