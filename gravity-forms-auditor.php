@@ -43,11 +43,11 @@ function gf_auditor() {
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, data, function(response) {
                 // console.log('Got this from the server: ' + response);
-
+                window.location.href = response;
                 // sending the user to fetch the report
-                jQuery.get(response, function (data) {
-                    window.location.href = $(this).attr('href');
-                });
+                // jQuery.get(response, function (data) {
+                //     window.location.href = $(this).attr('href');
+                // });
             });
         });
 		
