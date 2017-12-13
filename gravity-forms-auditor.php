@@ -47,7 +47,8 @@ function gf_auditor() {
         });
 		
 	});
-	</script> 
+	</script>
+    <script src="js/moment.js"></script>
     <h1>Gravity Forms Auditor</h1>
     <?php
     global $wpdb;
@@ -55,7 +56,15 @@ function gf_auditor() {
         $query = "SELECT last_run FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1";
         $result = $wpdb->get_results( $query );
         $last_run = $result[0]->last_run;
-        echo 'Last run: ' . $last_run;
+        ?>
+        <p>Last run: <span id="last-run"></span></p>
+        <script>
+        jQuery(document).ready(function($) {
+            var lastRun = moment("<?php echo $last_run; ?>").format('MMMM Do YYYY, h:mm a');
+            jQuery("#last-run").html(lastRun);
+        });
+        </script>
+        <?php
     }
     submit_button( 'Run Report' );
 }
