@@ -93,29 +93,60 @@ function report_runner() {
         $new_forms_json
     ) );
 
-    flatten_display_meta( $new_forms );
-    // echo print_r( array_diff( $new_forms, $old_forms ) ) . "\n\n\n";
-    // echo 'new_forms_json: ' . $new_forms_json;
+    $new_forms_flattened = flatten_display_meta( $new_forms );
+    $old_forms_flattened = flatten_display_meta( $old_forms );
+
+    $diffs = array();
+    for( $i=0; $i<count( $new_forms_flattened ); $i++ ){
+        $new_site_id = $new_forms_flattened[$i]["site_id"];
+        $new_site_forms = $new_forms_flattened[$i]["forms"];
+        for( $j=0; $j<count( $new_site_forms ); $j++ ){
+            $new_form_id = $new_site_forms[$j]["form_id"];
+            $is_form_in_dump = is_form_in_dump( $new_site_id, $new_form_id, $old_forms_flattened )
+            if( $is_form_in_dump[0] ){
+                $new_display_meta = $new_site_forms[$j]["display_meta"];
+                $old_display_meta = $old_forms_flattened[$is_form_in_dump[1]][$is_form_in_dump[2]]["display_meta"];
+                if( count( array_diff( $new_display_meta, $old_display_meta ) )>0 ){
+                    array_push( $diffs, array( "site_id"=>$new_site_id, "form_id"=>$new_form_id ) ); // adding the form to the array of differences
+                }
+            } else{
+                array_push( $diffs, array( "site_id"=>$new_site_id, "form_id"=>$new_form_id ) ); // adding the form to the array of differences
+            }
+        }
+    }
+
+    echo 'diffs: ' . print_r( $diffs );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
 
-// flattens the display_meta part of the JSON
+// returns a boolean if the form is in a dump based on site_id and form_id
+function is_form_in_dump( $site_id, $form_id, $dump ){
+    for( $i=0; $i<count( $dump ); $i++ ){
+        if( $dump[$i]["site_id"]==$site_id ){
+            $forms = $dump[$i]["forms"];
+            for( $j=0; $j<count( $forms ); $j++ ){
+                if( $forms[$j]["form_id"]==$form_id ){
+                    return array( true, $i, $j) ; // found it
+                }
+            }
+        }
+    }
+    return array( false ); // went thru all of the sites and forms and didn't find it
+}
+
+// flattens the display_meta part of the JSON dump
 function flatten_display_meta( $arr_dump ) {
     for( $i=0; $i<count( $arr_dump ); $i++ ){
-        // echo 'arr_dump[$i]: ' . print_r( $arr_dump[$i] );
         $forms = $arr_dump[$i]["forms"];
-        // echo 'forms: ' . $forms;
         for( $j=0; $j<count( $forms ); $j++ ){
-            // echo 'forms[$j]: ' . print_r( $forms[$j] );
             $display_meta_arr = $forms[$j]["display_meta"];
-            $display_meta_flattened = json_encode( $display_meta_arr );
-            // echo 'display_meta_flattened: ' . $display_meta_flattened;
+            $display_meta_flattened = json_encode( $display_meta_arr ); // squish
             $forms[$j]["display_meta"] = $display_meta_flattened;
         }
         $arr_dump[$i]["forms"] = $forms;
     }
-    echo 'dump: ' . print_r( $arr_dump );
+    return $arr_dump;
 }
 
 // a function that queries the $wpdb and returns all Gravity Forms data on the multisite
