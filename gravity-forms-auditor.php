@@ -111,7 +111,7 @@ function report_runner() {
                 // echo 'is_form_in_dump[1]: ' . $is_form_in_dump[1] . "\n\n\n";
                 // echo 'is_form_in_dump[2]: ' . $is_form_in_dump[2] . "\n\n\n";
                 echo 'old_display_meta: ' . $old_display_meta . "\n\n\n";
-                $are_strings_same = strcmp( $new_display_meta, $old_display_meta );
+                $are_strings_same = $new_display_meta==$old_display_meta;
                 echo 'are_strings_same: ' . $are_strings_same . "\n\n\n";
                 if( !$are_strings_same ){
                     array_push( $diffs, array( "site_id"=>$new_site_id, "form_id"=>$new_form_id ) ); // adding the form to the array of differences
