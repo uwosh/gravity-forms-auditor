@@ -107,7 +107,7 @@ function report_runner() {
     generate_report( $diffs, $new_forms );
 
     // returning the URL of the report back to the browser
-    // echo wp_upload_dir()["baseurl"] . "/gf-audits/WP-Audit.xlsx";
+    echo wp_upload_dir()["baseurl"] . "/gf-audits/WP-Audit.xlsx";
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
@@ -124,18 +124,46 @@ function generate_report( $diffs, $dump ) {
     $sheet->setTitle("WordPress Forms Audit");
 
     // setting the headers in the sheet
-    $sheet->getCell('A1')->setValue('Site ID');
-    $sheet->getCell('B1')->setValue('Site URL');
-    $sheet->getCell('C1')->setValue('Site Owner');
+    $sheet->getCell('A1')->setValue('WordPress Site ID');
+    $sheet->getCell('B1')->setValue('Site Name');
+    $sheet->getCell('C1')->setValue('Site Owner Email');
     $sheet->getCell('D1')->setValue('Form ID');
-    $sheet->getCell('E1')->setValue('Form Name');
-    $sheet->getCell('F1')->setValue('Pages');
-    $sheet->getCell('G1')->setValue('Fields');
+    $sheet->getCell('E1')->setValue('Form Title');
+    $sheet->getCell('F1')->setValue('Pages Form Appears On');
+    $sheet->getCell('G1')->setValue('Field Label');
     $sheet->getCell('H1')->setValue('Field Type');
 
     // Inserting form data
-    echo print_r($dump);
-    
+    $row_counter = 2; // start writing at row 2 in the spreadsheet
+    for( $i=0; $i<count( $diffs ); $i++ ){
+        $site_id = $diffs[$i]["site_id"];
+        $form_id = $diffs[$i]["form_id"];
+        for( $j=0; $j<count( $dump ); $j++ ){
+            if( $dump[$j]["site_id"]==$site_id ) {
+                $sheet->getCell('A' . $row_counter)->setValue($dump[$j]["site_id"]);
+                $sheet->getCell('B' . $row_counter)->setValue($dump[$j]["site_name"]);
+                $sheet->getCell('C' . $row_counter)->setValue($dump[$j]["admin_email"]);
+                
+                $forms = $dump[$j]["forms"];
+                for( $k=0; $k<count( $forms ); $k++ ){
+                    if( $forms[$k]["form_id"]==$form_id ){
+                        $sheet->getCell('D' . $row_counter)->setValue($forms[$k]["form_id"]);
+                        $sheet->getCell('E' . $row_counter)->setValue($forms[$k]["display_meta"]["title"]);
+                        $sheet->getCell('F' . $row_counter)->setValue(implode(", ", $forms[$k]["permalinks"]));
+
+                        $row_counter++;
+                        $fields = $forms[$k]["display_meta"]["fields"];
+                        for( $l=0; $l<count( $fields ); $l++){
+                            $sheet->getCell('G' . $row_counter)->setValue($fields["label"]);
+                            $sheet->getCell('H' . $row_counter)->setValue($fields["type"]);
+                            $row_counter++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // creating the directory if it doesn't exist
     if ( !file_exists( wp_upload_dir()["basedir"] . "/gf-audits" ) ) {
         mkdir( wp_upload_dir()["basedir"] . "/gf-audits" , 0777, true);
