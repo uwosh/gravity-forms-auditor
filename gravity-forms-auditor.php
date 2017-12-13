@@ -106,11 +106,11 @@ function report_runner() {
             $is_form_in_dump = is_form_in_dump( $new_site_id, $new_form_id, $old_forms_flattened );
             if( $is_form_in_dump[0] ){
                 $new_display_meta = $new_site_forms[$j]["display_meta"];
-                // echo 'new_display_meta: ' . $new_display_meta . "\n\n\n";
+                echo 'new_display_meta: ' . $new_display_meta . "\n\n\n";
                 $old_display_meta = $old_forms_flattened[$is_form_in_dump[1]]["forms"][$is_form_in_dump[2]]["display_meta"];
                 // echo 'is_form_in_dump[1]: ' . $is_form_in_dump[1] . "\n\n\n";
                 // echo 'is_form_in_dump[2]: ' . $is_form_in_dump[2] . "\n\n\n";
-                // echo 'old_display_meta: ' . $old_display_meta . "\n\n\n";
+                echo 'old_display_meta: ' . $old_display_meta . "\n\n\n";
                 $are_strings_same = strcmp( $new_display_meta, $old_display_meta );
                 echo 'are_strings_same: ' . $are_strings_same . "\n\n\n";
                 if( !$are_strings_same ){
