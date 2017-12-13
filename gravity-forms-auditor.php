@@ -42,7 +42,12 @@ function gf_auditor() {
 		};
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, data, function(response) {
-                console.log('Got this from the server: ' + response);
+                // console.log('Got this from the server: ' + response);
+                
+                // sending the user to fetch the report
+                jQuery.get(response, (data) ->
+                    window.location.href = $(this).attr('href');
+                );
             });
         });
 		
@@ -103,6 +108,9 @@ function report_runner() {
     
     generate_report( $diffs, $new_forms );
 
+    // returning the URL of the report back to the browser
+    echo plugins_url( "gravity-forms-auditor/reports/WP-Audit.xlsx" );
+
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
 
@@ -117,18 +125,15 @@ function generate_report( $diffs, $dump ) {
     $phpExcel->getProperties()->setDescription("The configuration of every new Gravity Forms form.");
     $writer = PHPExcel_IOFactory::createWriter($phpExcel, "Excel2007");
     $sheet = $phpExcel->getActiveSheet();
-    $sheet->setTitle("Gravity Forms Audit");
+    $sheet->setTitle("WordPress Forms Audit");
 
     // setting the data
     $sheet->getCell('A1')->setValue('Product');
     $sheet->getCell('B1')->setValue('Quanity');
     $sheet->getCell('C1')->setValue('Price');
     
-    // downloading the file
-    header('Content-Type: application/vnd.ms-excel');
-    header('Content-Disposition: attachment;filename="gravity-forms-audit.xlsx"');
-    header('Cache-Control: max-age=0');
-    $writer->save('php://output'); 
+    // saving the report
+    $writer->save("reports/WP-Audit.xlsx");
 }
 
 // a function that takes two dumps and returns an array with a site id and form id with the differences between the dumps
