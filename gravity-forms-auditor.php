@@ -80,7 +80,6 @@ function gf_auditor() {
 add_action( 'wp_ajax_run_report', 'report_runner' );
 function report_runner() {
     global $wpdb;
-    require( "PHPExcel/PHPExcel.php" );
     // $whatever = intval( $_POST['whatever'] );
 
     // getting the last forms dump
@@ -101,10 +100,35 @@ function report_runner() {
     $old_forms_flattened = flatten_display_meta( $old_forms );
 
     $diffs = get_diffs( $old_forms_flattened, $new_forms_flattened );
-
-    echo print_r( $diffs );
+    
+    generate_report( $diffs, $new_forms );
 
 	wp_die(); // this is required to terminate immediately and return a proper response
+}
+
+// a function that generates the report and makes it available for download
+function generate_report( $diffs, $dump ) {
+    require( "PHPExcel/PHPExcel.php" );
+    $phpExcel = new PHPExcel;
+    $phpExcel->getDefaultStyle()->getFont()->setName('Arial');
+    $phpExcel->getDefaultStyle()->getFont()->setSize(12);
+    $phpExcel->getProperties()->setTitle("Gravity Forms Changes");
+    $phpExcel->getProperties()->setCreator("Joseph Kerkhof");
+    $phpExcel->getProperties()->setDescription("The configuration of every new Gravity Forms form.");
+    $writer = PHPExcel_IOFactory::createWriter($phpExcel, "Excel2007");
+    $sheet = $phpExcel->getActiveSheet();
+    $sheet->setTitle("Gravity Forms Audit");
+
+    // setting the data
+    $sheet->getCell('A1')->setValue('Product');
+    $sheet->getCell('B1')->setValue('Quanity');
+    $sheet->getCell('C1')->setValue('Price');
+    
+    // downloading the file
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="gravity-forms-audit.xlsx"');
+    header('Cache-Control: max-age=0');
+    $writer->save('php://output'); 
 }
 
 // a function that takes two dumps and returns an array with a site id and form id with the differences between the dumps
