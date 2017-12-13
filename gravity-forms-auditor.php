@@ -52,7 +52,10 @@ function gf_auditor() {
     <h1>Gravity Forms Auditor</h1>
     <?php
     global $wpdb;
-    if( table_exists( $wpdb->prefix . "form_auditor" ) ){
+    $table = $wpdb->prefix . "form_auditor";
+    $query = "SELECT id FROM " . $table;
+    $result = $wpdb->get_result( $query );
+    if( count( $result )>0 ){
         $query = "SELECT last_run FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1";
         $result = $wpdb->get_results( $query );
         $last_run = $result[0]->last_run;
