@@ -247,7 +247,6 @@ function get_all_gf() {
             foreach( $site_users as $user ){
                 array_push( $admins, $user->user_email );
             }
-            echo 'admins: ' . print_r( $admins );
 
             // Converting the JSON coming back from the DB to an array
             $forms = array();
@@ -264,6 +263,7 @@ function get_all_gf() {
             continue;
         }
     }
+    echo 'all_forms: ' . print_r( $all_forms );
     return $all_forms;
 }
 
