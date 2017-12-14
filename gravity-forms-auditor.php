@@ -22,7 +22,7 @@ function create_gf_auditor_table() {
     if( !table_exists( $table_name ) ){
         $query = "CREATE TABLE $table_name (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
-            last_run TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             forms_dump longtext NOT NULL,
             file_name VARCHAR(50) NOT NULL,
             PRIMARY KEY (id)
@@ -60,14 +60,19 @@ function gf_auditor() {
     $query = "SELECT id FROM " . $table;
     $result = $wpdb->get_results( $query );
     if( count( $result )>0 ){
-        $query = "SELECT last_run FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1";
-        $result = $wpdb->get_results( $query );
-        $last_run = $result[0]->last_run;
+        // getting the last run
+        $timestamp_query = "SELECT timestamp FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC LIMIT 1";
+        $result = $wpdb->get_results( $timestamp_query );
+        $timestamp = $result[0]->timestamp;
+
+        // getting a list of all runs
+        // $all_reports_query = "SELECT timestamp";
+
         ?>
         <p>Last report run on: <span id="last-run"></span></p>
         <script>
         jQuery(document).ready(function($) {
-            var lastRun = moment("<?php echo $last_run; ?>").format('MMMM Do YYYY, h:mm a');
+            var lastRun = moment("<?php echo $timestamp; ?>").format('MMMM Do YYYY, h:mm a');
             jQuery("#last-run").html(lastRun);
         });
         </script>
@@ -87,7 +92,7 @@ function report_runner() {
     // $whatever = intval( $_POST['whatever'] );
 
     // getting the last forms dump
-    $result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY last_run DESC LIMIT 1;" );
+    $result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC LIMIT 1;" );
     $old_forms_json = $result[0]->forms_dump;
     $old_forms = json_decode( $old_forms_json, true );
 
