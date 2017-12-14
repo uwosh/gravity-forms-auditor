@@ -51,7 +51,9 @@ function gf_auditor() {
         });
 		jQuery('#download-old-report').click(function() {
             var filename = jQuery('#select-old-report').find(":selected").val();
-            window.location.href = "<?php echo wp_upload_dir()["baseurl"] . "/gf-audits/" ?>" + filename;
+            if (filename != "select-a-report") { // checks to make sure that you didn't try to download the "Select a Report" option
+                window.location.href = "<?php echo wp_upload_dir()["baseurl"] . "/gf-audits/" ?>" + filename;
+            }
         });
 	});
 	</script>
@@ -77,7 +79,7 @@ function gf_auditor() {
         <p>Last report run on: <span id="last-run"></span></p>
         <p>Select a previous report to download</p>
         <select id="select-old-report">
-            <option value="Select a Report">Select a Report</option>
+            <option value="select-a-report">Select a Report</option>
             <?php
             foreach( $result as $key=>$report ){
                 echo '<option id="report' . $key . '" value="' . $report->file_name . '"></option>';
