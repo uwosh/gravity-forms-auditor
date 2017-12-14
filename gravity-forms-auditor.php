@@ -49,7 +49,9 @@ function gf_auditor() {
                 window.location.href = response;
             });
         });
-		
+		jQuery('#download-old-report').click(function() {
+            console.log("selected value: " + jQuery('#select-old-report').find(":selected").val());
+        });
 	});
 	</script>
     <script src="<?php echo plugins_url( "gravity-forms-auditor/js/moment.js" ); ?>"></script>
@@ -73,7 +75,7 @@ function gf_auditor() {
         ?>
         <p>Last report run on: <span id="last-run"></span></p>
         <p>Select a previous report to download</p>
-        <select>
+        <select id="select-old-report">
             <option value="Select a Report">Select a Report</option>
             <?php
             foreach( $result as $key=>$report ){
