@@ -76,7 +76,7 @@ function gf_auditor() {
         <select>
             <?php
             foreach( $result as $report ){
-                echo '<option value="' . $report->file_name . '">' . $report->timestamp . '</option>';
+                echo '<option id="' . urlencode( $report->timestamp ) . '" value="' . $report->file_name . '"></option>';
             }
             ?>
         </select>
@@ -84,6 +84,15 @@ function gf_auditor() {
         jQuery(document).ready(function($) {
             var lastRun = moment("<?php echo $last_run; ?>").format('MMMM Do YYYY, h:mm a');
             jQuery("#last-run").html(lastRun);
+            <?php
+            foreach( $result as $report ){
+                $option_id = urlencode( $report->timestamp );
+                ?>
+                var <?php echo $option_id; ?> = moment("<?php echo $report->timestamp ?>").format('MMMM Do YYYY, h:mm a');
+                jQuery("#<?php echo $option_id ?>").html(<?php echo $option_id ?>);
+                <?php
+            }
+            ?>
         });
         </script>
         <?php
