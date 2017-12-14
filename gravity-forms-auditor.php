@@ -74,6 +74,7 @@ function gf_auditor() {
         <p>Last report run on: <span id="last-run"></span></p>
         <p>Or select a previous report to download</p>
         <select>
+            <option value="Select a Report">Select a Report</option>
             <?php
             foreach( $result as $key=>$report ){
                 echo '<option id="report' . $key . '" value="' . $report->file_name . '"></option>';
