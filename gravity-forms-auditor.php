@@ -42,10 +42,10 @@ function gf_auditor() {
 		};
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, data, function(response) {
-                // console.log('Got this from the server: ' + response);
+                console.log('Got this from the server: ' + response);
                 
                 // sending the user to fetch the report
-                window.location.href = response;
+                // window.location.href = response;
             });
         });
 		
@@ -107,7 +107,7 @@ function report_runner() {
     generate_report( $diffs, $new_forms );
 
     // returning the URL of the report back to the browser
-    echo wp_upload_dir()["baseurl"] . "/gf-audits/WP-Audit.xlsx";
+    // echo wp_upload_dir()["baseurl"] . "/gf-audits/WP-Audit.xlsx";
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
@@ -247,6 +247,7 @@ function get_all_gf() {
             foreach( $site_users as $user ){
                 array_push( $admins, $user->user_email );
             }
+            echo 'admins: ' . print_r( $admins );
 
             // Converting the JSON coming back from the DB to an array
             $forms = array();
