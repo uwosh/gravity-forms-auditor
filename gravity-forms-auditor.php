@@ -61,18 +61,28 @@ function gf_auditor() {
     $result = $wpdb->get_results( $query );
     if( count( $result )>0 ){
         // getting the last run
-        $timestamp_query = "SELECT timestamp FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC LIMIT 1";
-        $result = $wpdb->get_results( $timestamp_query );
-        $timestamp = $result[0]->timestamp;
+        // $timestamp_query = "SELECT timestamp FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC LIMIT 1";
+        // $result = $wpdb->get_results( $timestamp_query );
+        // $last_run = $result[0]->timestamp;
 
         // getting a list of all runs
-        // $all_reports_query = "SELECT timestamp";
-
+        $all_reports_query = "SELECT timestamp, file_name FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC";
+        $result = $wpdb->get_results( $all_reports_query );
+        // getting the last run
+        $last_run = $result[0]->timestamp;
         ?>
         <p>Last report run on: <span id="last-run"></span></p>
+        <p>Or select a previous report to download</p>
+        <select>
+            <?php
+            foreach( $result as $report ){
+                echo '<option value="' . $report->file_name . '">' . $report->timestamp . '</option>';
+            }
+            ?>
+        </select>
         <script>
         jQuery(document).ready(function($) {
-            var lastRun = moment("<?php echo $timestamp; ?>").format('MMMM Do YYYY, h:mm a');
+            var lastRun = moment("<?php echo $last_run; ?>").format('MMMM Do YYYY, h:mm a');
             jQuery("#last-run").html(lastRun);
         });
         </script>
