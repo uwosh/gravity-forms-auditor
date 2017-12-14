@@ -24,6 +24,7 @@ function create_gf_auditor_table() {
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             last_run TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             forms_dump longtext NOT NULL,
+            file_name VARCHAR(50) NOT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -93,10 +94,16 @@ function report_runner() {
     // getting the latest dump
     $new_forms = get_all_gf();
     $new_forms_json = json_encode( $new_forms );
+
+    // generating the file name for the report
+    $date = new DateTime();
+    $filename = "WP-Forms-Audit-" . $date->getTimestamp() . ".xlsx";
+
     // inserting forms dump into DB
     $wpdb->query( $wpdb->prepare( 
-        "INSERT INTO " . $wpdb->prefix . "form_auditor ( forms_dump ) VALUES ( %s )",
-        $new_forms_json
+        "INSERT INTO " . $wpdb->prefix . "form_auditor ( forms_dump, file_name ) VALUES ( %s, %s )",
+        $new_forms_json,
+        $filename
     ) );
 
     $new_forms_flattened = flatten_display_meta( $new_forms );
@@ -104,16 +111,16 @@ function report_runner() {
 
     $diffs = get_diffs( $old_forms_flattened, $new_forms_flattened );
     
-    generate_report( $diffs, $new_forms );
+    generate_report( $diffs, $new_forms, $filename );
 
     // returning the URL of the report back to the browser
-    echo wp_upload_dir()["baseurl"] . "/gf-audits/WP-Audit.xlsx";
+    echo wp_upload_dir()["baseurl"] . "/gf-audits/" . $filename;
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
 
 // a function that generates the report and makes it available for download
-function generate_report( $diffs, $dump ) {
+function generate_report( $diffs, $dump, $filename ) {
     require( "PHPExcel/PHPExcel.php" );
     $phpExcel = new PHPExcel;
     $phpExcel->getProperties()->setTitle("Gravity Forms Changes");
@@ -170,7 +177,7 @@ function generate_report( $diffs, $dump ) {
         mkdir( wp_upload_dir()["basedir"] . "/gf-audits" , 0777, true);
     }
     // saving the report
-    $writer->save( wp_upload_dir()["basedir"] . "/gf-audits/WP-Audit.xlsx");
+    $writer->save( wp_upload_dir()["basedir"] . "/gf-audits/" . $filename );
 }
 
 // a function that takes two dumps and returns an array with a site id and form id with the differences between the dumps
