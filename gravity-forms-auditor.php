@@ -97,7 +97,7 @@ function report_runner() {
 
     // generating the file name for the report
     $date = new DateTime();
-    $filename = "WP-Forms-Audit-" . $date->getTimestamp() . ".xlsx";
+    $filename = "WP-Gravity-Forms-Audit-" . $date->getTimestamp() . ".xlsx";
 
     // inserting forms dump into DB
     $wpdb->query( $wpdb->prepare( 
