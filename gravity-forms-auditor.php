@@ -72,7 +72,7 @@ function gf_auditor() {
         $last_run = $result[0]->timestamp;
         ?>
         <p>Last report run on: <span id="last-run"></span></p>
-        <p>Or select a previous report to download</p>
+        <p>Select a previous report to download</p>
         <select>
             <option value="Select a Report">Select a Report</option>
             <?php
@@ -97,12 +97,15 @@ function gf_auditor() {
         });
         </script>
         <?php
-        submit_button( "Download Selected Report", "small", "download-old-report" );
+        submit_button( "Download Selected Report", "large", "download-old-report" );
     } else{
         ?>
         <p>Last report run on: The report has never been run.</p>
         <?php
     }
+    ?>
+    <p>Run a new report on all differences since last report.</p>
+    <?php
     submit_button( 'Run New Report' );
 }
 
