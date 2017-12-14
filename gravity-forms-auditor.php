@@ -50,7 +50,8 @@ function gf_auditor() {
             });
         });
 		jQuery('#download-old-report').click(function() {
-            console.log("selected value: " + jQuery('#select-old-report').find(":selected").val());
+            var filename = jQuery('#select-old-report').find(":selected").val();
+            window.location.href = "<?php echo wp_upload_dir()["baseurl"] . "/gf-audits/" ?>" + filename;
         });
 	});
 	</script>
