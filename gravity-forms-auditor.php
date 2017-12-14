@@ -127,11 +127,12 @@ function generate_report( $diffs, $dump ) {
     $sheet->getCell('A1')->setValue('WordPress Site ID');
     $sheet->getCell('B1')->setValue('Site Name');
     $sheet->getCell('C1')->setValue('Site Owner Email');
-    $sheet->getCell('D1')->setValue('Form ID');
-    $sheet->getCell('E1')->setValue('Form Title');
-    $sheet->getCell('F1')->setValue('Pages Form Appears On');
-    $sheet->getCell('G1')->setValue('Field Label');
-    $sheet->getCell('H1')->setValue('Field Type');
+    $sheet->getCell('D1')->setValue('Site Admins');
+    $sheet->getCell('E1')->setValue('Form ID');
+    $sheet->getCell('F1')->setValue('Form Title');
+    $sheet->getCell('G1')->setValue('Pages Form Appears On');
+    $sheet->getCell('H1')->setValue('Field Label');
+    $sheet->getCell('I1')->setValue('Field Type');
 
     // Inserting form data
     $row_counter = 2; // start writing at row 2 in the spreadsheet
@@ -143,19 +144,19 @@ function generate_report( $diffs, $dump ) {
                 $sheet->getCell('A' . (string) $row_counter)->setValue($dump[$j]["site_id"]);
                 $sheet->getCell('B' . (string) $row_counter)->setValue($dump[$j]["site_name"]);
                 $sheet->getCell('C' . (string) $row_counter)->setValue($dump[$j]["admin_email"]);
-                
+                $sheet->getCell('D' . (string) $row_counter)->setValue($dump[$j]["site_admins"]);
                 $forms = $dump[$j]["forms"];
                 for( $k=0; $k<count( $forms ); $k++ ){
                     if( $forms[$k]["form_id"]==$form_id ){
-                        $sheet->getCell('D' . (string) $row_counter)->setValue($forms[$k]["form_id"]);
-                        $sheet->getCell('E' . (string) $row_counter)->setValue($forms[$k]["display_meta"]["title"]);
-                        $sheet->getCell('F' . (string) $row_counter)->setValue(implode(", ", $forms[$k]["permalinks"]));
+                        $sheet->getCell('E' . (string) $row_counter)->setValue($forms[$k]["form_id"]);
+                        $sheet->getCell('F' . (string) $row_counter)->setValue($forms[$k]["display_meta"]["title"]);
+                        $sheet->getCell('G' . (string) $row_counter)->setValue(implode(", ", $forms[$k]["permalinks"]));
 
                         $row_counter++;
                         $fields = $forms[$k]["display_meta"]["fields"];
                         for( $l=0; $l<count( $fields ); $l++){
-                            $sheet->getCell('G' . (string) $row_counter)->setValue($fields[$l]["label"]);
-                            $sheet->getCell('H' . (string) $row_counter)->setValue($fields[$l]["type"]);
+                            $sheet->getCell('H' . (string) $row_counter)->setValue($fields[$l]["label"]);
+                            $sheet->getCell('I' . (string) $row_counter)->setValue($fields[$l]["type"]);
                             $row_counter++;
                         }
                     }
@@ -239,6 +240,14 @@ function get_all_gf() {
             $site_descriptors = get_site_descriptors( $site_id );
             $site_name = $site_descriptors["blogname"];
             $admin_email = $site_descriptors["admin_email"];
+
+            // getting the users for this site
+            $admins = array();
+            $site_users = get_users( array( "blog_id"=>$site_id, "role"=>"administrator" ) );
+            foreach( $site_users as $user ){
+                array_push( $admins, $user->user_email );
+            }
+
             // Converting the JSON coming back from the DB to an array
             $forms = array();
             for( $j=0; $j<count( $rows ); $j++ ) {
@@ -248,7 +257,7 @@ function get_all_gf() {
                 $form = array( "form_id"=>$form_id, "display_meta"=>$display_meta, "permalinks"=>$permalinks );
                 array_push( $forms, $form ); // adding form into forms
             }
-            $site_forms = array( "site_id"=>$site_id, "site_name"=>$site_name, "admin_email"=>$admin_email, "forms"=>$forms );
+            $site_forms = array( "site_id"=>$site_id, "site_name"=>$site_name, "admin_email"=>$admin_email, "site_admins"=>$admins, "forms"=>$forms );
             array_push( $all_forms, $site_forms );
         }else {
             continue;
