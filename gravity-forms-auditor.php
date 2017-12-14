@@ -88,8 +88,8 @@ function gf_auditor() {
             foreach( $result as $key=>$report ){
                 $option_id = urlencode( $report->timestamp );
                 ?>
-                var <?php echo "report-" . $key ?> = moment("<?php echo $report->timestamp ?>").format('MMMM Do YYYY, h:mm a');
-                jQuery("#<?php echo $option_id ?>").html(<?php echo "report-" . $key ?>);
+                var <?php echo "report" . $key ?> = moment("<?php echo $report->timestamp ?>").format('MMMM Do YYYY, h:mm a');
+                jQuery("#<?php echo $option_id ?>").html(<?php echo "report" . $key ?>);
                 <?php
             }
             ?>
