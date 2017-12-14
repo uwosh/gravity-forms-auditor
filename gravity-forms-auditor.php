@@ -87,10 +87,10 @@ function gf_auditor() {
             jQuery("#last-run").html(lastRun);
             <?php
             foreach( $result as $key=>$report ){
-                $option_id = urlencode( $report->timestamp );
+                $selector = "report" . $key;
                 ?>
-                var <?php echo "report" . $key; ?> = moment("<?php echo $report->timestamp; ?>").format('MMMM Do YYYY, h:mm a');
-                jQuery("#<?php echo "report" . $key; ?>").html(<?php echo "report" . $key; ?>);
+                var <?php echo $selector; ?> = moment("<?php echo $report->timestamp; ?>").format('MMMM Do YYYY, h:mm a');
+                jQuery("#<?php echo $selector; ?>").html(<?php echo $selector; ?>);
                 <?php
             }
             ?>
@@ -102,7 +102,7 @@ function gf_auditor() {
         <p>Last report run on: The report has never been run.</p>
         <?php
     }
-    submit_button( 'Run Report' );
+    submit_button( 'Run New Report' );
 }
 
 // Registering the run report AJAX call
