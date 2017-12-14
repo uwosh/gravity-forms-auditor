@@ -85,10 +85,10 @@ function gf_auditor() {
             var lastRun = moment("<?php echo $last_run; ?>").format('MMMM Do YYYY, h:mm a');
             jQuery("#last-run").html(lastRun);
             <?php
-            foreach( $result as $report ){
+            foreach( $result as $key=>$report ){
                 $option_id = urlencode( $report->timestamp );
                 ?>
-                var <?php echo $option_id; ?> = moment("<?php echo $report->timestamp ?>").format('MMMM Do YYYY, h:mm a');
+                var <?php echo "report-" . $key ?> = moment("<?php echo $report->timestamp ?>").format('MMMM Do YYYY, h:mm a');
                 jQuery("#<?php echo $option_id ?>").html(<?php echo $option_id ?>);
                 <?php
             }
