@@ -42,10 +42,10 @@ function gf_auditor() {
 		};
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, data, function(response) {
-                console.log('Got this from the server: ' + response);
+                // console.log('Got this from the server: ' + response);
                 
                 // sending the user to fetch the report
-                // window.location.href = response;
+                window.location.href = response;
             });
         });
 		
@@ -107,7 +107,7 @@ function report_runner() {
     generate_report( $diffs, $new_forms );
 
     // returning the URL of the report back to the browser
-    // echo wp_upload_dir()["baseurl"] . "/gf-audits/WP-Audit.xlsx";
+    echo wp_upload_dir()["baseurl"] . "/gf-audits/WP-Audit.xlsx";
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
@@ -144,7 +144,7 @@ function generate_report( $diffs, $dump ) {
                 $sheet->getCell('A' . (string) $row_counter)->setValue($dump[$j]["site_id"]);
                 $sheet->getCell('B' . (string) $row_counter)->setValue($dump[$j]["site_name"]);
                 $sheet->getCell('C' . (string) $row_counter)->setValue($dump[$j]["admin_email"]);
-                $sheet->getCell('D' . (string) $row_counter)->setValue($dump[$j]["site_admins"]);
+                $sheet->getCell('D' . (string) $row_counter)->setValue(implode(", " ,$dump[$j]["site_admins"]));
                 $forms = $dump[$j]["forms"];
                 for( $k=0; $k<count( $forms ); $k++ ){
                     if( $forms[$k]["form_id"]==$form_id ){
@@ -263,7 +263,6 @@ function get_all_gf() {
             continue;
         }
     }
-    echo 'all_forms: ' . print_r( $all_forms );
     return $all_forms;
 }
 
