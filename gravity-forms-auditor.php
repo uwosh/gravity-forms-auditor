@@ -97,6 +97,7 @@ function gf_auditor() {
         });
         </script>
         <?php
+        submit_button( "Download Selected Report", "small", "download-old-report" );
     } else{
         ?>
         <p>Last report run on: The report has never been run.</p>
