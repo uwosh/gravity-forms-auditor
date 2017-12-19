@@ -37,12 +37,15 @@ function gf_auditor() {
     ?>
     <script type="text/javascript" >
 	jQuery(document).ready(function($) {
-		var data = {
+		var run_difference_report = {
 			'action': 'run_report'//,
 			// 'whatever': 1234
 		};
+        var run_full_report = {
+			'action': 'run_full_report'
+		};
         jQuery('#submit').click(function() {
-            jQuery.post(ajaxurl, data, function(response) {
+            jQuery.post(ajaxurl, run_difference_report, function(response) {
                 // console.log('Got this from the server: ' + response);
                 
                 // sending the user to fetch the report
@@ -55,6 +58,14 @@ function gf_auditor() {
                 window.location.href = "<?php echo wp_upload_dir()["baseurl"] . "/gf-audits/" ?>" + filename;
             }
         });
+        jQuery('#run-full-report').click(function() {
+            jQuery.post(ajaxurl, run_full_report, function(response) {
+                console.log('Got this from the server: ' + response);
+                
+                // sending the user to fetch the report
+                // window.location.href = response;
+            });
+        });
 	});
 	</script>
     <script src="<?php echo plugins_url( "gravity-forms-auditor/js/moment.js" ); ?>"></script>
@@ -65,11 +76,6 @@ function gf_auditor() {
     $query = "SELECT id FROM " . $table;
     $result = $wpdb->get_results( $query );
     if( count( $result )>0 ){
-        // getting the last run
-        // $timestamp_query = "SELECT timestamp FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC LIMIT 1";
-        // $result = $wpdb->get_results( $timestamp_query );
-        // $last_run = $result[0]->timestamp;
-
         // getting a list of all runs
         $all_reports_query = "SELECT timestamp, file_name FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC";
         $result = $wpdb->get_results( $all_reports_query );
@@ -111,10 +117,20 @@ function gf_auditor() {
     ?>
     <p>Run a new report on all differences since last report.</p>
     <?php
-    submit_button( 'Run New Report' );
+    submit_button( "Run New Difference Report" );
+    ?>
+    <p>Run a full report on all Gravity Forms</p>
+    <?php
+    submit_button( "Run Full Report", "primary", "run-full-report" );
 }
 
-// Registering the run report AJAX call
+// Registering the run report AJAX call for running the full report
+add_action( 'wp_ajax_full_run_report', 'report_runner' );
+function full_report_runner() {
+    echo "got to full report runner";
+}
+
+// Registering the run report AJAX call for running the difference report
 add_action( 'wp_ajax_run_report', 'report_runner' );
 function report_runner() {
     global $wpdb;
