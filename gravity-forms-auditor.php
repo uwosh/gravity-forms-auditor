@@ -183,6 +183,7 @@ function report_runner() {
     echo "forms_flattened: " . print_r( $old_forms_json );
 
     $diffs = get_diffs( $old_forms_flattened, $new_forms_flattened );
+    echo "diffs: " . print_r( $diffs );
     
     generate_report( $diffs, $new_forms, $filename );
 
