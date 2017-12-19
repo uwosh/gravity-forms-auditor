@@ -46,10 +46,10 @@ function gf_auditor() {
 		};
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, run_difference_report, function(response) {
-                // console.log('Got this from the server: ' + response);
+                console.log('Got this from the server: ' + response);
                 
                 // sending the user to fetch the report
-                window.location.href = response;
+                // window.location.href = response;
             });
         });
 		jQuery('#download-old-report').click(function() {
@@ -177,6 +177,8 @@ function report_runner() {
 
     $new_forms_flattened = flatten_display_meta( $new_forms );
     $old_forms_flattened = flatten_display_meta( $old_forms );
+
+    echo "forms_flattened: " . print_r( $old_forms_flattened );
 
     $diffs = get_diffs( $old_forms_flattened, $new_forms_flattened );
     
