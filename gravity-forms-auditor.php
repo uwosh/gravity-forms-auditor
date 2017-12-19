@@ -127,7 +127,26 @@ function gf_auditor() {
 // Registering the run report AJAX call for running the full report
 add_action( 'wp_ajax_run_full_report', 'full_report_runner' );
 function full_report_runner() {
-    echo "got to full report runner";
+    // getting the latest dump
+    $forms = get_all_gf();
+    $forms_json = json_encode( $forms );
+
+    // generating the file name for the report
+    $date = new DateTime();
+    $filename = "WP-Gravity-Forms-Full-Audit-" . $date->getTimestamp() . ".xlsx";
+
+    // generating an empty file for the full compare
+    $empty = json_encode( array() );
+    $diffs = get_diffs( $empty, $forms_json );
+
+    // generating the report
+    generate_report( $diffs, $forms, $filename );
+
+    // returning the file URL to the user
+    echo wp_upload_dir()["baseurl"] . "/gf-audits/" . $filename;
+
+    // terminating the script
+    wp_die();
 }
 
 // Registering the run report AJAX call for running the difference report
