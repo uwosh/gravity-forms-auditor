@@ -139,7 +139,7 @@ function full_report_runner() {
     $empty = json_encode( array() );
     echo "forms_json: " . $forms_json . "\n";
     $diffs = get_diffs( $empty, $forms_json );
-    echo "diffs:" . $diffs . "\n";
+    echo "diffs:" . print_r( $diffs ) . "\n";
 
     // generating the report
     generate_report( $diffs, $forms, $filename );
