@@ -138,7 +138,8 @@ function full_report_runner() {
     // generating an empty file for the full compare
     $empty = json_encode( array() );
     echo "forms_json: " . $forms_json . "\n";
-    $diffs = get_diffs( $empty, $forms_json );
+    $forms_flattened = flatten_display_meta( $forms_json );
+    $diffs = get_diffs( $empty, $forms_flattened );
     echo "diffs:" . print_r( $diffs ) . "\n";
 
     // generating the report
@@ -180,7 +181,7 @@ function report_runner() {
     $new_forms_flattened = flatten_display_meta( $new_forms );
     $old_forms_flattened = flatten_display_meta( $old_forms );
 
-    // echo "forms_flattened: " . print_r( $old_forms_json );
+    echo "old_forms_flattened: " . print_r( $old_forms_flattened );
 
     $diffs = get_diffs( $old_forms_flattened, $new_forms_flattened );
     echo "diffs: " . print_r( $diffs );
