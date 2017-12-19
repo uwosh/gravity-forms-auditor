@@ -178,14 +178,14 @@ function report_runner() {
     $new_forms_flattened = flatten_display_meta( $new_forms );
     $old_forms_flattened = flatten_display_meta( $old_forms );
 
-    echo "forms_flattened: " . print_r( $old_forms_flattened );
+    echo "forms_flattened: " . print_r( $old_forms );
 
     $diffs = get_diffs( $old_forms_flattened, $new_forms_flattened );
     
     generate_report( $diffs, $new_forms, $filename );
 
     // returning the URL of the report back to the browser
-    echo wp_upload_dir()["baseurl"] . "/gf-audits/" . $filename;
+    // echo wp_upload_dir()["baseurl"] . "/gf-audits/" . $filename;
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
