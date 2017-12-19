@@ -125,7 +125,7 @@ function gf_auditor() {
 }
 
 // Registering the run report AJAX call for running the full report
-add_action( 'wp_ajax_full_run_report', 'report_runner' );
+add_action( 'wp_ajax_full_run_report', 'full_report_runner' );
 function full_report_runner() {
     echo "got to full report runner";
 }
