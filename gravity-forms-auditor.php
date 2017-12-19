@@ -137,8 +137,9 @@ function full_report_runner() {
 
     // generating an empty file for the full compare
     $empty = json_encode( array() );
-    echo "empty: " . print_r( $empty );
+    echo "forms_json: " . $forms_json . "\n";
     $diffs = get_diffs( $empty, $forms_json );
+    echo "diffs:" . $diffs . "\n";
 
     // generating the report
     generate_report( $diffs, $forms, $filename );
