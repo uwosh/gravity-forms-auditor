@@ -46,10 +46,10 @@ function gf_auditor() {
 		};
         jQuery('#submit').click(function() {
             jQuery.post(ajaxurl, run_difference_report, function(response) {
-                console.log('Got this from the server: ' + response);
+                // console.log('Got this from the server: ' + response);
                 
                 // sending the user to fetch the report
-                // window.location.href = response;
+                window.location.href = response;
             });
         });
 		jQuery('#download-old-report').click(function() {
@@ -60,10 +60,10 @@ function gf_auditor() {
         });
         jQuery('#run-full-report').click(function() {
             jQuery.post(ajaxurl, run_full_report, function(response) {
-                console.log('Got this from the server: ' + response);
+                // console.log('Got this from the server: ' + response);
                 
                 // sending the user to fetch the report
-                // window.location.href = response;
+                window.location.href = response;
             });
         });
 	});
