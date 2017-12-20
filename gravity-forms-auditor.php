@@ -119,7 +119,7 @@ function gf_auditor() {
     <?php
     submit_button( "Run New Difference Report" );
     ?>
-    <p>Run a full report on all Gravity Forms</p>
+    <p>Run a full report on all Gravity Forms.</p>
     <?php
     submit_button( "Run Full Report", "primary", "run-full-report" );
 }
@@ -137,16 +137,18 @@ function full_report_runner() {
 
     // generating an empty file for the full compare
     $empty = json_encode( array() );
-    echo "forms_json: " . $forms_json . "\n";
     $forms_flattened = flatten_display_meta( $forms_json );
+    
+    echo 'empty: ' . $empty . "\n\n\n";
+    echo 'forms_flattened: ' . $forms_flattened . "\n\n\n";
     $diffs = get_diffs( $empty, $forms_flattened );
-    echo "diffs:" . print_r( $diffs ) . "\n";
+    // echo "diffs:" . print_r( $diffs ) . "\n";
 
     // generating the report
     generate_report( $diffs, $forms, $filename );
 
     // returning the file URL to the user
-    echo wp_upload_dir()["baseurl"] . "/gf-audits/" . $filename;
+    // echo wp_upload_dir()["baseurl"] . "/gf-audits/" . $filename;
 
     // terminating the script
     wp_die();
@@ -181,10 +183,10 @@ function report_runner() {
     $new_forms_flattened = flatten_display_meta( $new_forms );
     $old_forms_flattened = flatten_display_meta( $old_forms );
 
-    echo "old_forms_flattened: " . print_r( $old_forms_flattened );
-
+    echo "old_forms_flattened: " . $old_forms_flattened;
+    echo "new_forms_flattened: " . $new_forms_flattened;
     $diffs = get_diffs( $old_forms_flattened, $new_forms_flattened );
-    echo "diffs: " . print_r( $diffs );
+    // echo "diffs: " . print_r( $diffs );
     
     generate_report( $diffs, $new_forms, $filename );
 
