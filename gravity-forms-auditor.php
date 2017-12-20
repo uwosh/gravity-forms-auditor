@@ -128,6 +128,9 @@ function gf_auditor() {
 add_action( 'wp_ajax_run_full_report', 'full_report_runner' );
 function full_report_runner() {
     echo "test";
+
+
+
     // terminating the script
     wp_die();
 }
@@ -140,9 +143,9 @@ function report_runner() {
 
     // getting the last forms dump
     $result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC LIMIT 1;" );
-    echo "result: " . json_encode( $result );
     $old_forms_json = $result[0]->forms_dump;
     $old_forms = json_decode( $old_forms_json, true );
+    echo 'old_forms: ' . $old_forms;
 
     // getting the latest dump
     $new_forms = get_all_gf();
