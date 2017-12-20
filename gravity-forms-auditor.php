@@ -162,7 +162,7 @@ function report_runner() {
 
     // getting the last forms dump
     $result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC LIMIT 1;" );
-    echo "result: " . print_r( $result );
+    echo "result: " . json_encode( $result );
     $old_forms_json = $result[0]->forms_dump;
     $old_forms = json_decode( $old_forms_json, true );
 
