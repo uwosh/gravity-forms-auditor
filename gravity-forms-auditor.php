@@ -136,7 +136,7 @@ function full_report_runner() {
     $filename = "WP-Gravity-Forms-Full-Audit-" . $date->getTimestamp() . ".xlsx";
 
     // generating an empty file for the full compare
-    $empty = json_encode( array() );
+    $empty = array();
     $forms_flattened = flatten_display_meta( $forms_json );
     
     // echo 'empty: ' . $empty . "\n\n\n";
