@@ -139,8 +139,8 @@ function full_report_runner() {
     $empty = json_encode( array() );
     $forms_flattened = flatten_display_meta( $forms_json );
     
-    echo 'empty: ' . $empty . "\n\n\n";
-    echo 'forms_flattened: ' . $forms_flattened . "\n\n\n";
+    // echo 'empty: ' . $empty . "\n\n\n";
+    // echo 'forms_flattened: ' . $forms_flattened . "\n\n\n";
     $diffs = get_diffs( $empty, $forms_flattened );
     // echo "diffs:" . print_r( $diffs ) . "\n";
 
@@ -162,6 +162,7 @@ function report_runner() {
 
     // getting the last forms dump
     $result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC LIMIT 1;" );
+    echo "result: " . print_r( $result );
     $old_forms_json = $result[0]->forms_dump;
     $old_forms = json_decode( $old_forms_json, true );
 
@@ -183,8 +184,8 @@ function report_runner() {
     $new_forms_flattened = flatten_display_meta( $new_forms );
     $old_forms_flattened = flatten_display_meta( $old_forms );
 
-    echo "old_forms_flattened: " . $old_forms_flattened;
-    echo "new_forms_flattened: " . $new_forms_flattened;
+    // echo "old_forms_flattened: " . $old_forms_flattened;
+    // echo "new_forms_flattened: " . $new_forms_flattened;
     $diffs = get_diffs( $old_forms_flattened, $new_forms_flattened );
     // echo "diffs: " . print_r( $diffs );
     
