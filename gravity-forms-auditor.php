@@ -136,7 +136,7 @@ function full_report_runner() {
 
     // getting the diffs
     $diffs = get_diffs( $empty_flattened, $forms_flattened );
-    echo "diffs: " . $diffs;
+    echo "diffs: " . print_r($diffs);
 
     // terminating the script
     wp_die();
