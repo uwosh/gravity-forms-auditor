@@ -136,7 +136,16 @@ function full_report_runner() {
 
     // getting the diffs
     $diffs = get_diffs( $empty_flattened, $forms_flattened );
-    echo "diffs: " . print_r($diffs);
+
+    // generating the file name for the report
+    $date = new DateTime();
+    $filename = "WP-Gravity-Forms-Full-Audit-" . $date->getTimestamp() . ".xlsx";
+
+    // generating a report
+    generate_report( $diffs, $new_forms, $filename );
+
+    // echoing the url back to the ajax call
+    echo wp_upload_dir()["baseurl"] . "/gf-audits/" . $filename;
 
     // terminating the script
     wp_die();
@@ -172,15 +181,12 @@ function report_runner() {
     $new_forms_flattened = flatten_display_meta( $new_forms );
     $old_forms_flattened = flatten_display_meta( $old_forms );
 
-    // echo "old_forms_flattened: " . $old_forms_flattened;
-    // echo "new_forms_flattened: " . $new_forms_flattened;
     $diffs = get_diffs( $old_forms_flattened, $new_forms_flattened );
-    // echo "diffs: " . print_r( $diffs );
     
     generate_report( $diffs, $new_forms, $filename );
 
     // returning the URL of the report back to the browser
-    // echo wp_upload_dir()["baseurl"] . "/gf-audits/" . $filename;
+    echo wp_upload_dir()["baseurl"] . "/gf-audits/" . $filename;
 
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
