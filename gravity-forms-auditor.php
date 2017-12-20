@@ -142,7 +142,7 @@ function full_report_runner() {
     $filename = "WP-Gravity-Forms-Full-Audit-" . $date->getTimestamp() . ".xlsx";
 
     // generating a report
-    generate_report( $diffs, $new_forms, $filename );
+    generate_report( $diffs, $forms, $filename );
 
     // echoing the url back to the ajax call
     echo wp_upload_dir()["baseurl"] . "/gf-audits/" . $filename;
