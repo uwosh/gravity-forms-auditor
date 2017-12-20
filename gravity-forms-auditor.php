@@ -127,9 +127,16 @@ function gf_auditor() {
 // Registering the run report AJAX call for running the full report
 add_action( 'wp_ajax_run_full_report', 'full_report_runner' );
 function full_report_runner() {
-    echo "test";
+    $empty = NULL;
+    $empty_flattened = flatten_display_meta( $empty );
 
+    // getting the latest dump
+    $forms = get_all_gf();
+    $forms_flattened = flatten_display_meta( $forms );
 
+    // getting the diffs
+    $diffs = get_diffs( $empty_flattened, $forms_flattened );
+    echo "diffs: " . $diffs;
 
     // terminating the script
     wp_die();
