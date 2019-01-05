@@ -45,9 +45,7 @@ function gf_auditor() {
 			'action': 'run_full_report'
 		};
         jQuery('#submit').click(function() {
-            jQuery.post(ajaxurl, run_difference_report, function(response) {
-                // console.log('Got this from the server: ' + response);
-                
+            jQuery.post(ajaxurl, run_difference_report, function(response) {                
                 // sending the user to fetch the report
                 window.location.href = response;
             });
@@ -59,9 +57,7 @@ function gf_auditor() {
             }
         });
         jQuery('#run-full-report').click(function() {
-            jQuery.post(ajaxurl, run_full_report, function(response) {
-                // console.log('Got this from the server: ' + response);
-                
+            jQuery.post(ajaxurl, run_full_report, function(response) {                
                 // sending the user to fetch the report
                 window.location.href = response;
             });
