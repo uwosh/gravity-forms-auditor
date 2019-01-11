@@ -9,11 +9,33 @@ Version: 0.1
 Network: True
 */
 
+/**
+ *
+ * Registers the Gravity Forms Auditor menu ONLY in the Super Admin settings panel.
+ * This is not a settings page registered for a normal site administrator.
+ * 
+ */
 add_action( 'network_admin_menu', 'gf_auditor_menu' );
 function gf_auditor_menu() {
     add_menu_page( 'Form Auditor', 'Form Auditor', 'administrator', 'gravity-forms-auditor', 'gf_auditor', 'dashicons-clipboard' );
 }
 
+/**
+ *
+ * This hook registers a function that is called on plugin activation to create the tables in the WordPress
+ * database that is required for the Gravity Forms Auditor plugin to work.
+ *
+ * +-------------------------+
+ * |       form_auditor      |
+ * +-------------------------+
+ * |                         |
+ * | id (pk)                 |
+ * | timestamp               |
+ * | forms_dump              |
+ * | file_name               |
+ * |                         |
+ *  +-------------------------+
+ */
 register_activation_hook( __FILE__, 'create_gf_auditor_table' );
 function create_gf_auditor_table() {
     global $wpdb;
@@ -32,14 +54,21 @@ function create_gf_auditor_table() {
     }
 }
 
-// The plugin menu page
+/**
+ *
+ * This function displays the plugin menu page and registers all Ajax calls to PHP required to run a 'difference report', or 'full report.'
+ * There is an additional option to download old reports that were generated in the past. These reports are saved in the /uploads/gf-audits folder in WordPress.
+ * 
+ * Difference report: A report only showing changes to metadata for each of the Gravity Forms on the multisite since the last time a report was run.
+ * Full report: A report providing a full export all metadata on every form in the multisite.
+ *
+ */
 function gf_auditor() {
     ?>
     <script type="text/javascript" >
 	jQuery(document).ready(function($) {
 		var run_difference_report = {
-			'action': 'run_report'//,
-			// 'whatever': 1234
+			'action': 'run_report'
 		};
         var run_full_report = {
 			'action': 'run_full_report'
@@ -120,7 +149,11 @@ function gf_auditor() {
     submit_button( "Run Full Report", "primary", "run-full-report" );
 }
 
-// Registering the run report AJAX call for running the full report
+/**
+ *
+ * Registering the run report AJAX call for running the full report.
+ * 
+ */
 add_action( 'wp_ajax_run_full_report', 'full_report_runner' );
 function full_report_runner() {
     $empty = NULL;
@@ -130,7 +163,7 @@ function full_report_runner() {
     $forms = get_all_gf();
     $forms_flattened = flatten_display_meta( $forms );
 
-    // getting the diffs
+    // getting the differences between these two objects.
     $diffs = get_diffs( $empty_flattened, $forms_flattened );
 
     // generating the file name for the report
@@ -147,11 +180,14 @@ function full_report_runner() {
     wp_die();
 }
 
-// Registering the run report AJAX call for running the difference report
+/**
+ *
+ * Registering the run report AJAX call for running the difference report
+ * 
+ */
 add_action( 'wp_ajax_run_report', 'report_runner' );
 function report_runner() {
     global $wpdb;
-    // $whatever = intval( $_POST['whatever'] );
 
     // getting the last forms dump
     $result = $wpdb->get_results( "SELECT forms_dump FROM " . $wpdb->prefix . "form_auditor ORDER BY timestamp DESC LIMIT 1;" );
@@ -186,7 +222,16 @@ function report_runner() {
 	wp_die(); // this is required to terminate immediately and return a proper response
 }
 
-// a function that generates the report and makes it available for download
+/**
+ *
+ * A function that generates the report and makes it available for download
+ *
+ * @param    object  $diffs The content of the report to be made wrapped in an object. When running a difference report, this will have the differences
+ *                      between two reports. When running a full report, it will have the differences between an empty report and the current (yielding everything).
+ * @param    object  $dump All of the forms.
+ * @param    string  $filename The name of the file to be generated.
+ *
+ */
 function generate_report( $diffs, $dump, $filename ) {
     require( "PHPExcel/PHPExcel.php" );
     $phpExcel = new PHPExcel;
@@ -249,7 +294,15 @@ function generate_report( $diffs, $dump, $filename ) {
     $writer->save( wp_upload_dir()["basedir"] . "/gf-audits/" . $filename );
 }
 
-// a function that takes two dumps and returns an array with a site id and form id with the differences between the dumps
+/**
+ *
+ * A function that takes two dumps and returns an array with a site id and form id with the differences between the dumps.
+ *
+ * @param    object  $old_dump The dump to compare against.
+ * @param    object  $new_dump The dump to compare to.
+ * @return   object  $diffs The object that contains the differences between the old and the new.
+ *
+ */
 function get_diffs($old_dump, $new_dump){
     $diffs = array();
     for( $i=0; $i<count( $new_dump ); $i++ ){
@@ -273,7 +326,16 @@ function get_diffs($old_dump, $new_dump){
     return $diffs;
 }
 
-// returns a boolean if the form is in a dump based on site_id and form_id
+/**
+ *
+ * A helper function that returns a boolean if the form is in a dump based on site_id and form_id
+ *
+ * @param    string  $site_id A string of a site_id
+ * @param    string $form_id A string of a form_id
+ * @param    object  $dump The object to check thru to see if the form and site id are present.
+ * @return   boolean Tells if the form is in the dump.
+ *
+ */
 function is_form_in_dump( $site_id, $form_id, $dump ){
     for( $i=0; $i<count( $dump ); $i++ ){
         if( $dump[$i]["site_id"]==$site_id ){
@@ -288,7 +350,14 @@ function is_form_in_dump( $site_id, $form_id, $dump ){
     return array( false ); // went thru all of the sites and forms and didn't find it
 }
 
-// flattens the display_meta part of the JSON dump
+/**
+ *
+ * A helper function that flattens the display_meta part of the JSON dump from Gravity Forms
+ *
+ * @param    object  $arr_dump An object to flatten making serialized data easier to handle.
+ * @return   object The flattened dump.
+ *
+ */
 function flatten_display_meta( $arr_dump ) {
     for( $i=0; $i<count( $arr_dump ); $i++ ){
         $forms = $arr_dump[$i]["forms"];
@@ -302,7 +371,13 @@ function flatten_display_meta( $arr_dump ) {
     return $arr_dump;
 }
 
-// a function that queries the $wpdb and returns all Gravity Forms data on the multisite
+/**
+ *
+ * A function that queries the $wpdb and returns all Gravity Forms data on the multisite.
+ *
+ * @return  object All forms parsed in an object on the multisite.
+ *
+ */
 function get_all_gf() {
     global $wpdb;
     $gf_form_meta_tables = get_gf_tables();
@@ -343,6 +418,14 @@ function get_all_gf() {
     return $all_forms;
 }
 
+/**
+ *
+ * A helper function that given a site_id goes and fetches metadata about that site including site name, and admin email.
+ *
+ * @param   string $site_id The site id.
+ * @return  object An object containing the site name (blogname) and admin email.
+ *
+ */
 function get_site_descriptors( $site_id ) {
     global $wpdb;
     if( $site_id==1 ) {
@@ -359,7 +442,15 @@ function get_site_descriptors( $site_id ) {
     return array( "blogname"=>$blogname, "admin_email"=>$admin_email );
 }
 
-// a function that returns the permalinks where the form is found on the page 
+/**
+ *
+ * A function that returns the permalinks where the Gravity Form tag is found on the page.
+ *
+ * @param   string $site_id The site id.
+ * @param   string $form_id The form id.
+ * @return  array An array containing all URLs for pages that contain a certain form (passed in from the input parameters)
+ *
+ */
 function get_pages_with_gf( $site_id, $form_id ) {
     global $wpdb;
     if( $site_id==1 ) {
@@ -375,7 +466,14 @@ function get_pages_with_gf( $site_id, $form_id ) {
     return $permalinks;
 }
 
-// a function to check if the MySQL table exists
+/**
+ *
+ * A helper function to check if the MySQL table exists
+ *
+ * @param   string $table The table you want to check.
+ * @return  boolean The value that tells you if the table exists.
+ *
+ */
 function table_exists( $table ) {
     global $wpdb;
     $result = $wpdb->get_results( "SHOW TABLES LIKE '" . $table . "'" );
@@ -386,7 +484,15 @@ function table_exists( $table ) {
     }
 }
 
-// Returns an array of table names for Gravity Forms metadata
+// 
+/**
+ *
+ * A helper that returns an array of table names for Gravity Forms metadata. This is required because there is no nice way to check if Gravity Forms is (or has in the past) been 
+ * enabled on a site before.
+ *
+ * @return  array Gravity Form table names in the $wpdb.
+ *
+ */
 function get_gf_tables() {
     global $wpdb;
     $num_sites = get_blog_count();
